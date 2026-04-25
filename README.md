@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Raisin.IDE
 
-## Getting Started
+> *Rethinking Coding Education for the AI Era*
 
-First, run the development server:
+**Live Demo:** https://raisin-ide.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### An Uphill Battle
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Professional AI coding tools weren't designed for learners. They're governed by task completion as the success condition.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Any constraint that doesn't change that governance structure reverts to completion behavior over time. A post-processed, inline context injection to "teach, don't complete" is always going to be fighting against this intentional behavior. 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+That's why existing tools do not feel native.
 
-## Learn More
+Because that's not the problem they're optimized to solve.
 
-To learn more about Next.js, take a look at the following resources:
+By and large, AI coding tools weren't (and won't be) designed with learners as the target audience. Given the revenue dynamics and macro AI game-plan, it's understandable that most startups and major AI labs are chasing professional developers. And for the enterprise team that's evaluating AI ROI, *completion* is the only metric that matters. 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### The Recalibration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+But just because there's no money to be made in retail, doesn't mean that there isn't thousands, if not millions, of folks who are learning to code or trying to improve. 
 
-## Deploy on Vercel
+In our view, the first step to serving this sizable population, is to acknowledge the need to bifurcate the treatment of coding professionals from those who are learning to code. 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+It's tempting to lump these two demographics into the same group, but to quote Jeremy Keith: 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> "Java is to JavaScript as ham is to hamster." 
+
+While the terms *professional coder* and *beginner coder* sound similar, that overlap is in name only, much like the hamster analogy. After all, knowledge acquisition (encoding) lights up a fundamentally different part of our brain than task execution (retrieval), even if those networks run parallel to each other.
+
+### The Necessary Battle
+
+Raisin.IDE is a bet on the fact that for this latter group of folks, a solution tailored to their needs will deliver indispensable value. 
+
+Raisin.IDE is also a bet that learning to code will still be important despite how the role of coders will change in the age of AI.
+
+Read our full thesis here: [blog.stackademic.com](https://blog.stackademic.com/rethinking-coding-education-for-the-ai-era-054b40a350d5).
