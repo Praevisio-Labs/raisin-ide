@@ -10,6 +10,7 @@ import AssistantPanel from '@/components/AssistantPanel'
 import ThemeSelect from '@/components/ThemeSelect'
 
 export default function Home() {
+    const [selected, setSelected] = useState(FILES[0])
     const [theme, setTheme] = useState('raisin')
 
     return (
@@ -23,15 +24,21 @@ export default function Home() {
                 <ThemeSelect theme={theme} setTheme={setTheme} />
             </div>
             <div className="flex-1 flex gap-1 p-1 overflow-hidden">
-                <div className={`flex-1 h-full rounded-sm bg-${theme}-panel`}>
-                    <FileTree theme={theme} />
+                <div
+                    className={`flex-1 h-full rounded-sm overflow-hidden bg-${theme}-panel`}>
+                    <FileTree
+                        files={FILES}
+                        selected={selected}
+                        onSelect={setSelected}
+                        theme={theme}
+                    />
                 </div>
                 <div
-                    className={`flex-4 h-full flex flex-col rounded-sm bg-${theme}-editor p-2`}>
-                    <CodeEditor theme={theme} />
+                    className={`flex-4 h-full flex flex-col rounded-sm overflow-hidden bg-${theme}-editor`}>
+                    <CodeEditor file={selected} theme={theme} />
                 </div>
                 <div
-                    className={`flex-3 h-full rounded-sm bg-${theme}-panel p-2`}>
+                    className={`flex-3 h-full rounded-sm overflow-hidden bg-${theme}-panel`}>
                     <AssistantPanel theme={theme} />
                 </div>
             </div>

@@ -13,6 +13,6 @@
 - [x] build three-panel IDE layout with file tree, Monaco editor, and AI panel, #12
 - [x] add custom tailwind classes and implement three-theme toggle, #17
 - [x] implement static file tree with hardcoded file list, #13
-- [ ] wire file tree clicks to load placeholder text into Monaco editor, #14
+- [x] wire file tree clicks to load placeholder text into Monaco editor, #14
 - [ ] build AI panel UI shell with input, send button, and message list, #15
 - [ ] enhance and finalize layout at desktop screen sizes, #16

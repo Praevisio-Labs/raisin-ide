@@ -1,6 +1,9 @@
 import { File } from './index'
 
 export interface FileTreeProps {
+    files: File[]
+    selected: File
+    onSelect: (file: File) => void
     theme: string
 }
 
