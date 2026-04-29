@@ -12,4 +12,5 @@ export type Language =
 export type File = {
     name: string
     fileType: Language
+    content: string
 }
