@@ -1,15 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { AssistantProps } from '@/types/components'
 import RaisinIcon from '@/components/RaisinIcon'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
+import TypingIndicator from '@/components/TypingIndicator'
 
 export default function AssistantPanel({ theme }: AssistantProps) {
+    const [isLoading, setIsLoading] = useState(false)
     const [query, setQuery] = useState('')
     const [messages, setMessages] = useState([
         { role: 'assistant', content: 'Hi! What are we building today?' },
     ])
+
+    const scrollRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({
+                behavior: 'smooth',
+            })
+        }
+    }, [messages, isLoading])
 
     const userStyle =
         'max-w-[75%] self-end border rounded-sm opacity-66 font-medium mt-6'
@@ -22,29 +33,35 @@ export default function AssistantPanel({ theme }: AssistantProps) {
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
 
+        if (!query) return
+        setIsLoading(true)
+
         const userQuery = {
             role: 'user',
-            content: query,
+            content: query.trim(),
         }
-
         setMessages((prev) => [
             ...prev,
             userQuery, //
         ])
 
+        setQuery('')
         appendMockResponse()
     }
 
     function appendMockResponse() {
-        const assistantResponse = {
-            role: 'assistant',
-            content:
-                'Great question. But the endpoint is not live. Check back soon!',
-        }
-        setMessages((prev) => [
-            ...prev,
-            assistantResponse, //
-        ])
+        setTimeout(() => {
+            const assistantResponse = {
+                role: 'assistant',
+                content:
+                    'Great question. But the endpoint is not live. Check back soon!',
+            }
+            setMessages((prev) => [
+                ...prev,
+                assistantResponse, //
+            ])
+            setIsLoading(false)
+        }, 2800)
     }
 
     return (
@@ -67,6 +84,8 @@ export default function AssistantPanel({ theme }: AssistantProps) {
                             {msg.content}
                         </div>
                     ))}
+                    {isLoading && <TypingIndicator theme={theme} />}
+                    <div ref={scrollRef}></div>
                 </div>
                 <form
                     onSubmit={handleSubmit}

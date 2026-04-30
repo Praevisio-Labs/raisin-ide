@@ -23,8 +23,13 @@ export interface ThemeProps {
 
 export interface LogoProps {
     className?: string
+    style?: React.CSSProperties
 }
 
 export interface FileIconProps {
     fileType: string
+}
+
+export interface TypingIndicatorProps {
+    theme: string
 }

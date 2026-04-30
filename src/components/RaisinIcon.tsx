@@ -1,9 +1,10 @@
 import { LogoProps } from '@/types/components'
 
-export default function RaisinIcon({ className }: LogoProps) {
+export default function RaisinIcon({ className, style }: LogoProps) {
     return (
         <svg
             className={className}
+            style={style}
             viewBox="0 0 511.187 511.187"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor">
