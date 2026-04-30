@@ -38,7 +38,7 @@ export default function Home() {
                     <CodeEditor file={selected} theme={theme} />
                 </div>
                 <div
-                    className={`flex-3 h-full rounded-sm overflow-hidden bg-${theme}-panel`}>
+                    className={`flex-3 h-full flex flex-col gap-2 rounded-sm overflow-hidden bg-${theme}-panel`}>
                     <AssistantPanel theme={theme} />
                 </div>
             </div>
