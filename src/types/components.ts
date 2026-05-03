@@ -41,4 +41,5 @@ export interface ModuleProps {
     description?: string
     skills?: string[]
     files?: File[]
+    onClick: () => void
 }

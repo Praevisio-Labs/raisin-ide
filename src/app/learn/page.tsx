@@ -13,7 +13,7 @@ export default function Page() {
     const router = useRouter()
     const moduleID = searchParams.get('module')
     const project = moduleID
-        ? projectData.find((project) => project.id === moduleID)
+        ? projectData.find((proj) => proj.id === moduleID)
         : null
 
     const header = (
@@ -38,19 +38,26 @@ export default function Page() {
                 </h2>
             </div>
             <div className="flex-1 flex flex-col gap-12 p-3">
-                {project.skills.map((skill, index) => (
-                    <div
-                        key={index}
-                        className="flex flex-col text-lg font-semibold gap-2">
-                        <h1
-                            className={`${manrope.className} text-${theme}-font-tertiary`}>
-                            {skill}
-                        </h1>
-                        <div className="text-sm font-normal">{`<Content/>`}</div>
-                    </div>
-                ))}
+                {project.skills.map((projectSkill, index) => {
+                    const thisSkill = skillsData.find(
+                        (skill) => skill.id === projectSkill,
+                    )
+                    return (
+                        <div
+                            key={index}
+                            className="flex flex-col text-lg font-semibold gap-2">
+                            <h1
+                                className={`${manrope.className} text-${theme}-font-tertiary`}>
+                                {thisSkill?.name}
+                            </h1>
+                            <div className="text-sm font-normal">{`<Content/>`}</div>
+                        </div>
+                    )
+                })}
             </div>
-            <button>Start Project</button>
+            <button onClick={() => router.push(`/?module=${project.id}`)}>
+                Start Project
+            </button>
         </main>
     ) : (
         <main
@@ -69,6 +76,9 @@ export default function Page() {
                         theme={theme}
                         name={project.name}
                         description={project.description}
+                        onClick={() =>
+                            router.push(`/learn/?module=${project.id}`)
+                        }
                     />
                 ))}
             </div>

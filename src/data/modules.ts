@@ -180,7 +180,7 @@ body {
     cursor: pointer;
     color: #888;
 }
-    
+
     `.trim(),
             },
         ],
@@ -201,6 +201,21 @@ export const skillsData = [
     {
         id: 'css-3',
         name: 'CSS',
+        content: 'Learn the basics of...',
+    },
+    {
+        id: 'next',
+        name: 'Next.js',
+        content: 'Learn the basics of...',
+    },
+    {
+        id: 'open-ai',
+        name: 'OpenAI API',
+        content: 'Learn the basics of...',
+    },
+    {
+        id: 'supabase',
+        name: 'Supabase',
         content: 'Learn the basics of...',
     },
 ]

@@ -3,10 +3,12 @@ import { ModuleProps } from '@/types/components'
 export default function ModuleCard({
     theme,
     name,
-    description, //
+    description,
+    onClick,
 }: ModuleProps) {
     return (
         <div
+            onClick={onClick}
             className={`
                     flex flex-col gap-4 p-4
                     justify-center items-center
