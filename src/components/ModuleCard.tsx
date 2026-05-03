@@ -11,8 +11,8 @@ export default function ModuleCard({
                     flex flex-col gap-4 p-4
                     justify-center items-center
                     w-50 h-50 
-                    text-${theme}-font 
-                    rounded-lg border-2 border-${theme}-accent-bright 
+                    text-${theme}-font-primary 
+                    rounded-lg border-2 border-${theme}-accent-primary 
                     bg-${theme}-card hover:opacity-60
                     cursor-pointer
                     `}>

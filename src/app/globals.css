@@ -1,38 +1,54 @@
 @import "tailwindcss";
 
 @theme {
-  --color-dark-page: #020408;
-  --color-dark-editor: #0D1116;
-  --color-dark-panel: #020408;
-  --color-dark-input: #112345;
-  --color-dark-gap: #161B22;
-  --color-dark-font: #838C96;
-  --color-dark-accent-bright: #0065D7;
-  --color-dark-accent-subtle: #0059BE;
-  --color-dark-card: #0D1116;
-  --color-dark-message: #0C1831;
-  
-  --color-light-page: #403D39;
-  --color-light-editor: #FFFCF2;
-  --color-light-panel: #FFFCF2;
-  --color-light-input: #FFF6D9;
-  --color-light-gap: #CCC5B9;
-  --color-light-font: #EB7F28;
-  --color-light-accent-bright: #EB5E28;
-  --color-light-accent-subtle: #CD4713;
-  --color-light-card: #F4F1DE;
-  --color-light-message: #FFF0C0;
-  
   --color-raisin-page: #240046;
   --color-raisin-editor: #5A189A;
   --color-raisin-panel: #3C096C;
   --color-raisin-input: #560D9B;
   --color-raisin-gap: #7B2CBF;
-  --color-raisin-font: #FF9E00;
-  --color-raisin-accent-bright: #FF6D00;
-  --color-raisin-accent-subtle: #CC5700;
+  --color-raisin-font-primary: #FF9E00;
+  --color-raisin-font-secondary: #FF8300;
+  --color-raisin-font-tertiary: #FF6200;
+  --color-raisin-accent-primary: #FF6D00;
+  --color-raisin-accent-secondary: #CC5700;
+  --color-raisin-accent-tertiary: #FF9A4E;
   --color-raisin-card: #5A189A;
   --color-raisin-message: #7011CA;
+  
+  --color-dark-page: #030712;
+  --color-dark-editor: #0D1116;
+  --color-dark-panel: #020408;
+  --color-dark-input: #112345;
+  --color-dark-gap: #161B22;
+  --color-dark-font-primary: #EDEDED;
+  --color-dark-font-secondary: #A1A1A1;
+  --color-dark-font-tertiary: #A684FF;
+  --color-dark-accent-primary: #0065D7;
+  --color-dark-accent-secondary: #0059BE;
+  --color-dark-accent-tertiary: #7D8597;
+  --color-dark-card: #0D1116;
+  --color-dark-message: #0C1831;
+  
+  --color-light-page: #252422;
+  --color-light-editor: #CCC5B9;
+  --color-light-panel: #FFFCF2;
+  --color-light-input: #FFFFFE;
+  --color-light-gap: #F5F5F5;
+  --color-light-font-primary: #EB5E28;
+  --color-light-font-secondary: #403D39;
+  --color-light-font-tertiary: #252422;
+  --color-light-accent-primary: #EB5E28;
+  --color-light-accent-secondary: #252422;
+  --color-light-accent-tertiary: #CD4713;
+  --color-light-card: #F4F1DE;
+  --color-light-message: #FFF0C0;
 }
 
-@source inline("bg-dark-page bg-dark-editor bg-dark-panel bg-dark-input bg-dark-gap bg-dark-card bg-dark-font bg-dark-accent-bright bg-dark-message text-dark-font text-dark-card border-dark-accent-bright border-dark-accent-subtle border-dark-gap bg-light-page bg-light-editor bg-light-panel bg-light-input bg-light-gap bg-light-card bg-light-font bg-light-accent-bright bg-light-message text-light-font text-light-card border-light-accent-bright border-light-accent-subtle border-light-gap bg-raisin-page bg-raisin-editor bg-raisin-panel bg-raisin-input bg-raisin-gap bg-raisin-card bg-raisin-font bg-raisin-accent-bright bg-raisin-message text-raisin-font text-raisin-card border-raisin-accent-bright border-raisin-accent-subtle border-raisin-gap");
+/* raisin */
+@source inline("bg-dark-page bg-dark-editor bg-dark-panel bg-dark-input bg-dark-gap bg-dark-card bg-dark-font-primary bg-dark-accent-primary bg-dark-message text-dark-font-primary text-dark-font-secondary text-dark-font-tertiary text-dark-card border-dark-accent-primary border-dark-accent-secondary border-dark-gap");
+
+/* dark */
+@source inline("bg-light-page bg-light-editor bg-light-panel bg-light-input bg-light-gap bg-light-card bg-light-font-primary bg-light-accent-primary bg-light-message text-light-font-primary text-light-font-secondary text-light-font-tertiary text-light-card border-light-accent-primary border-light-accent-secondary border-light-gap");
+
+/* light */
+@source inline("bg-raisin-page bg-raisin-editor bg-raisin-panel bg-raisin-input bg-raisin-gap bg-raisin-card bg-raisin-font-primary bg-raisin-accent-primary bg-raisin-message text-raisin-font-primary text-raisin-font-secondary text-raisin-font-tertiary text-raisin-card border-raisin-accent-primary border-raisin-accent-secondary border-raisin-gap");
