@@ -973,17 +973,774 @@ Custom properties cascade and inherit like any other property. They're the found
     {
         id: 'next',
         name: 'Next.js',
-        content: 'Learn the basics of...',
+        content: `
+## Next.js Refresher
+
+Next.js is a React framework that adds file-based routing, server-side rendering, static generation, and API routes on top of React. It handles the build pipeline, code splitting, and deployment optimizations so you don't have to configure them yourself.
+
+---
+
+### Project structure
+
+\`\`\`
+my-app/
+├── app/                  # App Router (Next.js 13+)
+│   ├── layout.tsx        # Root layout — wraps every page
+│   ├── page.tsx          # Route: /
+│   ├── about/
+│   │   └── page.tsx      # Route: /about
+│   └── blog/
+│       ├── page.tsx      # Route: /blog
+│       └── [slug]/
+│           └── page.tsx  # Route: /blog/:slug (dynamic)
+├── public/               # Static assets — served at /
+├── next.config.ts        # Next.js configuration
+└── package.json
+\`\`\`
+
+---
+
+### The App Router
+
+Next.js 13 introduced the **App Router** (the \`app/\` directory), which uses React Server Components by default. The older **Pages Router** (\`pages/\` directory) still works but the App Router is the current standard.
+
+Every \`page.tsx\` file exports a default React component that becomes the UI for that route:
+
+\`\`\`tsx
+// app/about/page.tsx
+export default function AboutPage() {
+    return <h1>About</h1>
+}
+\`\`\`
+
+---
+
+### Layouts
+
+A \`layout.tsx\` file wraps all routes at its level and below. The root layout is required and must include \`<html>\` and \`<body>\`:
+
+\`\`\`tsx
+// app/layout.tsx
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="en">
+            <body>{children}</body>
+        </html>
+    )
+}
+\`\`\`
+
+Nested layouts wrap only their subtree. A \`app/dashboard/layout.tsx\` wraps all routes under \`/dashboard\` without re-rendering the root layout.
+
+---
+
+### Server vs Client Components
+
+By default, every component in the App Router is a **Server Component** — it renders on the server, has no JavaScript bundle cost on the client, and can directly access databases, environment variables, and the filesystem.
+
+Add \`'use client'\` at the top of a file to make it a **Client Component** — required for anything that uses browser APIs, event handlers, or React hooks like \`useState\` and \`useEffect\`:
+
+\`\`\`tsx
+'use client'
+
+import { useState } from 'react'
+
+export default function Counter() {
+    const [count, setCount] = useState(0)
+    return <button onClick={() => setCount(count + 1)}>{count}</button>
+}
+\`\`\`
+
+A good pattern: keep data fetching and heavy logic in Server Components, push interactivity into small Client Components at the leaves of the tree.
+
+---
+
+### Data fetching
+
+In Server Components, fetch data directly with \`async\`/\`await\` — no \`useEffect\` needed:
+
+\`\`\`tsx
+// app/posts/page.tsx
+async function getPosts() {
+    const res = await fetch('https://api.example.com/posts', {
+        next: { revalidate: 60 }, // revalidate every 60 seconds
+    })
+    return res.json()
+}
+
+export default async function PostsPage() {
+    const posts = await getPosts()
+    return (
+        <ul>
+            {posts.map((post) => (
+                <li key={post.id}>{post.title}</li>
+            ))}
+        </ul>
+    )
+}
+\`\`\`
+
+Next.js extends the native \`fetch\` API with caching options:
+
+- \`cache: 'force-cache'\` — cache indefinitely (default for static generation)
+- \`cache: 'no-store'\` — always fetch fresh (equivalent to SSR)
+- \`next: { revalidate: N }\` — revalidate after N seconds (ISR)
+
+---
+
+### Dynamic routes
+
+Wrap a folder name in square brackets to create a dynamic segment:
+
+\`\`\`tsx
+// app/blog/[slug]/page.tsx
+export default async function PostPage({ params }: { params: { slug: string } }) {
+    const post = await getPost(params.slug)
+    return <article>{post.content}</article>
+}
+\`\`\`
+
+Use \`generateStaticParams\` to pre-render dynamic routes at build time:
+
+\`\`\`tsx
+export async function generateStaticParams() {
+    const posts = await getPosts()
+    return posts.map((post) => ({ slug: post.slug }))
+}
+\`\`\`
+
+---
+
+### Route Handlers (API routes)
+
+Create a \`route.ts\` file inside the \`app/\` directory to define an API endpoint:
+
+\`\`\`ts
+// app/api/hello/route.ts
+import { NextResponse } from 'next/server'
+
+export async function GET() {
+    return NextResponse.json({ message: 'Hello' })
+}
+
+export async function POST(request: Request) {
+    const body = await request.json()
+    return NextResponse.json({ received: body })
+}
+\`\`\`
+
+The file can export named functions for each HTTP method: \`GET\`, \`POST\`, \`PUT\`, \`PATCH\`, \`DELETE\`.
+
+---
+
+### The \`Link\` component
+
+Use \`<Link>\` from \`next/link\` for client-side navigation — it prefetches the destination page and avoids a full reload:
+
+\`\`\`tsx
+import Link from 'next/link'
+
+export default function Nav() {
+    return (
+        <nav>
+            <Link href="/">Home</Link>
+            <Link href="/about">About</Link>
+        </nav>
+    )
+}
+\`\`\`
+
+Never use a plain \`<a>\` tag for internal navigation — it triggers a full page load.
+
+---
+
+### The \`Image\` component
+
+\`next/image\` automatically optimizes images: resizing, converting to modern formats (WebP/AVIF), and lazy loading.
+
+\`\`\`tsx
+import Image from 'next/image'
+
+export default function Avatar() {
+    return (
+        <Image
+            src="/avatar.jpg"
+            alt="User avatar"
+            width={64}
+            height={64}
+        />
+    )
+}
+\`\`\`
+
+\`width\` and \`height\` are required for local images to prevent layout shift. For images that fill their container, use \`fill\` with a positioned parent instead.
+
+---
+
+### Metadata
+
+Export a \`metadata\` object (or a \`generateMetadata\` function) from any \`page.tsx\` or \`layout.tsx\` to set \`<head>\` tags:
+
+\`\`\`tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: 'My App',
+    description: 'A Next.js application',
+}
+\`\`\`
+
+For dynamic titles, use the \`title.template\` pattern in the root layout:
+
+\`\`\`tsx
+export const metadata: Metadata = {
+    title: {
+        template: '%s | My App',
+        default: 'My App',
+    },
+}
+\`\`\`
+
+---
+
+### Environment variables
+
+Store secrets and config in \`.env.local\` (never commit this file):
+
+\`\`\`
+DATABASE_URL=postgres://...
+NEXT_PUBLIC_API_URL=https://api.example.com
+\`\`\`
+
+- Variables without a prefix are server-only — never sent to the browser.
+- Variables prefixed with \`NEXT_PUBLIC_\` are exposed to the client bundle.
+
+Access them via \`process.env.VARIABLE_NAME\`.
+
+---
+
+### Common gotchas
+
+- **Server Components can't use hooks** or browser APIs. If you get an error about \`useState\` or \`window\`, add \`'use client'\` to that file.
+- **Client Components can import Server Components** as children via \`props.children\`, but cannot import them directly as JSX inside the Client Component file.
+- **\`fetch\` deduplication**: Next.js automatically deduplicates identical \`fetch\` calls made during the same render pass — safe to call the same endpoint in multiple components.
+- **\`params\` is async in Next.js 15+**: \`params\` and \`searchParams\` props are now Promises. Await them before accessing properties.
+- **The \`app/\` and \`pages/\` routers can coexist** during migration, but a route can only be defined in one of them.
+        `.trim(),
     },
     {
         id: 'tailwind',
         name: 'Tailwind CSS',
-        content: 'Learn the basics of...',
+        content: `
+## Tailwind CSS Refresher
+
+Tailwind is a utility-first CSS framework. Instead of writing custom CSS classes, you compose styles directly in your markup using small, single-purpose utility classes. There's no stylesheet to maintain — Tailwind scans your files at build time and generates only the CSS you actually use.
+
+---
+
+### How it works
+
+\`\`\`tsx
+// Traditional approach — write a class, then style it in CSS
+<button class="btn-primary">Save</button>
+
+// Tailwind approach — compose utilities directly
+<button class="px-4 py-2 bg-violet-700 text-white rounded hover:bg-violet-800">
+    Save
+</button>
+\`\`\`
+
+The tradeoff: HTML gets more verbose, but you never context-switch to a stylesheet, and there are no naming decisions to make.
+
+---
+
+### Spacing and sizing
+
+Tailwind uses a numeric scale where each step is \`4px\` (by default \`1 = 4px\`, \`2 = 8px\`, \`4 = 16px\`, etc.).
+
+\`\`\`html
+<!-- Padding -->
+<div class="p-4">        <!-- padding: 1rem on all sides -->
+<div class="px-4 py-2">  <!-- horizontal: 1rem, vertical: 0.5rem -->
+<div class="pt-2 pb-4">  <!-- top: 0.5rem, bottom: 1rem -->
+
+<!-- Margin -->
+<div class="m-4">
+<div class="mx-auto">    <!-- center horizontally -->
+<div class="mt-8 mb-4">
+
+<!-- Width and height -->
+<div class="w-full">     <!-- width: 100% -->
+<div class="w-64">       <!-- width: 16rem -->
+<div class="w-1/2">      <!-- width: 50% -->
+<div class="max-w-xl">   <!-- max-width: 36rem -->
+<div class="h-screen">   <!-- height: 100vh -->
+\`\`\`
+
+---
+
+### Typography
+
+\`\`\`html
+<p class="text-sm">       <!-- font-size: 0.875rem -->
+<p class="text-base">     <!-- font-size: 1rem -->
+<p class="text-xl">       <!-- font-size: 1.25rem -->
+<p class="text-3xl">      <!-- font-size: 1.875rem -->
+
+<p class="font-normal">   <!-- font-weight: 400 -->
+<p class="font-medium">   <!-- font-weight: 500 -->
+<p class="font-semibold"> <!-- font-weight: 600 -->
+<p class="font-bold">     <!-- font-weight: 700 -->
+
+<p class="leading-tight"> <!-- line-height: 1.25 -->
+<p class="leading-relaxed"><!-- line-height: 1.625 -->
+
+<p class="tracking-tight"><!-- letter-spacing: -0.025em -->
+<p class="tracking-wide"> <!-- letter-spacing: 0.025em -->
+
+<p class="text-center">
+<p class="uppercase">
+<p class="truncate">      <!-- overflow: hidden + text-overflow: ellipsis -->
+\`\`\`
+
+---
+
+### Colors
+
+Tailwind ships a full color palette. Each color has shades from \`50\` (lightest) to \`950\` (darkest).
+
+\`\`\`html
+<!-- Text color -->
+<p class="text-gray-700">
+<p class="text-violet-600">
+
+<!-- Background color -->
+<div class="bg-white">
+<div class="bg-slate-100">
+<div class="bg-violet-700">
+
+<!-- Border color -->
+<div class="border border-gray-200">
+<div class="border-2 border-violet-500">
+
+<!-- Opacity modifier — works on any color utility -->
+<div class="bg-black/50">   <!-- background: rgb(0 0 0 / 0.5) -->
+<p class="text-gray-900/80">
+\`\`\`
+
+---
+
+### Flexbox and Grid
+
+\`\`\`html
+<!-- Flexbox -->
+<div class="flex items-center justify-between gap-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap">
+<div class="flex-1">         <!-- flex: 1 1 0% -->
+<div class="shrink-0">       <!-- flex-shrink: 0 -->
+
+<!-- Grid -->
+<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="col-span-2">     <!-- grid-column: span 2 -->
+\`\`\`
+
+---
+
+### Borders and shadows
+
+\`\`\`html
+<div class="border">              <!-- 1px solid border -->
+<div class="border-2">            <!-- 2px solid border -->
+<div class="border-t">            <!-- top border only -->
+<div class="rounded">             <!-- border-radius: 0.25rem -->
+<div class="rounded-lg">          <!-- border-radius: 0.5rem -->
+<div class="rounded-full">        <!-- border-radius: 9999px — pill/circle -->
+
+<div class="shadow">              <!-- small box shadow -->
+<div class="shadow-md">
+<div class="shadow-lg">
+<div class="shadow-none">
+\`\`\`
+
+---
+
+### Responsive design
+
+Tailwind is mobile-first. Unprefixed utilities apply at all screen sizes. Prefix with a breakpoint to apply at that size and above:
+
+| Prefix | Min-width |
+|--------|-----------|
+| \`sm:\` | 640px |
+| \`md:\` | 768px |
+| \`lg:\` | 1024px |
+| \`xl:\` | 1280px |
+| \`2xl:\` | 1536px |
+
+\`\`\`html
+<div class="text-sm md:text-base lg:text-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+<div class="hidden md:block">   <!-- hidden on mobile, visible on md+ -->
+<div class="block md:hidden">   <!-- visible on mobile, hidden on md+ -->
+\`\`\`
+
+---
+
+### State variants
+
+\`\`\`html
+<!-- Hover, focus, active -->
+<button class="bg-violet-700 hover:bg-violet-800 active:bg-violet-900">
+<input class="border focus:outline-none focus:ring-2 focus:ring-violet-500">
+
+<!-- Focus-visible — keyboard focus only, not mouse click -->
+<button class="focus-visible:ring-2 focus-visible:ring-violet-500">
+
+<!-- Disabled -->
+<button class="disabled:opacity-50 disabled:cursor-not-allowed">
+
+<!-- Group hover — style a child when the parent is hovered -->
+<div class="group">
+    <p class="text-gray-500 group-hover:text-gray-900">...</p>
+</div>
+
+<!-- Dark mode -->
+<div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+\`\`\`
+
+---
+
+### Arbitrary values
+
+When the built-in scale doesn't have what you need, use square bracket notation to drop in any value:
+
+\`\`\`html
+<div class="w-[340px]">
+<div class="top-[117px]">
+<div class="bg-[#5a3a82]">
+<div class="grid-cols-[1fr_2fr_1fr]">
+<p class="text-[13px] leading-[1.4]">
+\`\`\`
+
+---
+
+### The \`@apply\` directive
+
+If you need to reuse a combination of utilities in CSS (e.g. for a component library or third-party HTML you can't control), use \`@apply\` in your stylesheet:
+
+\`\`\`css
+.btn-primary {
+    @apply px-4 py-2 bg-violet-700 text-white rounded font-medium hover:bg-violet-800;
+}
+\`\`\`
+
+Use this sparingly — it defeats some of the benefits of utility-first. Prefer extracting a React/HTML component instead.
+
+---
+
+### Customizing the theme
+
+Extend or override Tailwind's defaults in \`tailwind.config.ts\`:
+
+\`\`\`ts
+import type { Config } from 'tailwindcss'
+
+export default {
+    content: ['./src/**/*.{ts,tsx}'],
+    theme: {
+        extend: {
+            colors: {
+                brand: {
+                    DEFAULT: '#5a3a82',
+                    light: '#7c5aa8',
+                    dark: '#3d2659',
+                },
+            },
+            fontFamily: {
+                sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+            borderRadius: {
+                '4xl': '2rem',
+            },
+        },
+    },
+} satisfies Config
+\`\`\`
+
+Custom values become first-class utilities: \`bg-brand\`, \`text-brand-light\`, \`font-sans\`, \`rounded-4xl\`.
+
+---
+
+### Common gotchas
+
+- **Dynamic class names don't work.** Tailwind scans source files for complete class strings at build time. \`\`text-\${color}-500\`\` won't be included in the output — always use full class names like \`text-red-500\`.
+- **Specificity is flat.** All utilities have the same specificity (one class), so source order in the generated stylesheet determines which wins when two utilities conflict. Use a single utility per property per element.
+- **\`prose\` for rich text.** The \`@tailwindcss/typography\` plugin adds a \`prose\` class that styles raw HTML (from a CMS or markdown renderer) without you having to target every element manually.
+- **Don't purge \`node_modules\`.** The \`content\` array in your config should point to your source files only — scanning \`node_modules\` slows the build significantly.
+        `.trim(),
     },
     {
         id: 'git',
         name: 'Git',
-        content: 'Learn the basics of...',
+        content: `
+## Git Refresher
+
+Git is a distributed version control system. It tracks changes to your files over time, lets you branch off to experiment without affecting the main codebase, and makes it possible to collaborate with others without overwriting each other's work.
+
+---
+
+### Core concepts
+
+- **Repository (repo)** — a directory Git is tracking, containing your files and the full history of every change.
+- **Commit** — a snapshot of your files at a point in time. Each commit has a unique hash, an author, a timestamp, and a message.
+- **Branch** — a lightweight pointer to a commit. Creating a branch lets you diverge from the main line of development without touching it.
+- **Remote** — a version of the repo hosted elsewhere (GitHub, GitLab, etc.). \`origin\` is the conventional name for the primary remote.
+- **Working tree** — the files you see on disk, in their current state.
+- **Staging area (index)** — a holding area where you assemble the next commit. You choose exactly which changes to include.
+
+---
+
+### Initial setup
+
+\`\`\`bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+
+# Initialize a new repo in the current directory
+git init
+
+# Clone an existing repo
+git clone https://github.com/user/repo.git
+git clone https://github.com/user/repo.git my-folder  # clone into a named folder
+\`\`\`
+
+---
+
+### The basic workflow
+
+\`\`\`bash
+# 1. Check what's changed
+git status
+
+# 2. Stage changes
+git add file.txt           # stage a specific file
+git add src/               # stage a directory
+git add .                  # stage everything in the working tree
+
+# 3. Commit
+git commit -m "Add login form validation"
+
+# 4. Push to the remote
+git push origin main
+\`\`\`
+
+Write commit messages in the imperative mood: "Fix bug" not "Fixed bug" or "Fixes bug." Keep the subject line under 72 characters.
+
+---
+
+### Viewing history
+
+\`\`\`bash
+git log                        # full log
+git log --oneline              # compact — one commit per line
+git log --oneline --graph      # with branch/merge visualization
+git log --oneline -10          # last 10 commits
+
+git show abc1234               # show a specific commit's diff
+git diff                       # unstaged changes vs last commit
+git diff --staged              # staged changes vs last commit
+git diff main..feature-branch  # diff between two branches
+\`\`\`
+
+---
+
+### Branching
+
+\`\`\`bash
+git branch                     # list local branches
+git branch -a                  # list local and remote branches
+
+git branch feature/login       # create a branch
+git switch feature/login       # switch to it
+git switch -c feature/login    # create and switch in one step
+
+git branch -d feature/login    # delete a merged branch
+git branch -D feature/login    # force-delete (even if unmerged)
+\`\`\`
+
+---
+
+### Merging and rebasing
+
+**Merge** — joins two branches by creating a merge commit. Preserves the full history of both branches.
+
+\`\`\`bash
+git switch main
+git merge feature/login        # merge feature into main
+\`\`\`
+
+**Rebase** — replays your branch's commits on top of another branch. Produces a linear history, but rewrites commit hashes.
+
+\`\`\`bash
+git switch feature/login
+git rebase main                # replay feature commits on top of main
+\`\`\`
+
+Use merge for integrating finished work into a shared branch. Use rebase to keep a feature branch up to date with \`main\` before opening a pull request. Never rebase commits that have already been pushed to a shared remote.
+
+---
+
+### Resolving conflicts
+
+A conflict occurs when two branches change the same lines differently. Git marks the conflict in the file:
+
+\`\`\`
+<<<<<<< HEAD
+const greeting = 'Hello'
+=======
+const greeting = 'Hi'
+>>>>>>> feature/login
+\`\`\`
+
+To resolve:
+1. Edit the file to keep the version you want (remove the markers).
+2. Stage the resolved file: \`git add file.txt\`
+3. Complete the merge: \`git commit\`
+
+---
+
+### Undoing things
+
+\`\`\`bash
+# Unstage a file (keep changes in working tree)
+git restore --staged file.txt
+
+# Discard changes in the working tree (irreversible)
+git restore file.txt
+
+# Amend the last commit message or add a forgotten file
+git add forgotten.txt
+git commit --amend --no-edit   # keep the same message
+
+# Undo a commit by creating a new "reverse" commit (safe for shared branches)
+git revert abc1234
+
+# Move HEAD back N commits, keeping changes staged
+git reset --soft HEAD~1
+
+# Move HEAD back N commits, keeping changes unstaged
+git reset HEAD~1
+
+# Move HEAD back N commits, discarding changes entirely (destructive)
+git reset --hard HEAD~1
+\`\`\`
+
+Prefer \`revert\` over \`reset\` on any branch others are working on. \`reset --hard\` is destructive — the discarded commits are gone.
+
+---
+
+### Working with remotes
+
+\`\`\`bash
+git remote -v                          # list remotes
+git remote add origin <url>            # add a remote
+
+git fetch origin                       # download remote changes, don't merge
+git pull origin main                   # fetch + merge
+git pull --rebase origin main          # fetch + rebase (cleaner history)
+
+git push origin feature/login          # push a branch
+git push -u origin feature/login       # push and set upstream tracking
+git push --force-with-lease            # safer force push — fails if remote has new commits
+\`\`\`
+
+---
+
+### Stashing
+
+Stash saves your uncommitted changes temporarily so you can switch context without committing half-done work.
+
+\`\`\`bash
+git stash                    # stash working tree and staged changes
+git stash push -m "WIP: form validation"  # stash with a description
+
+git stash list               # see all stashes
+git stash pop                # apply the most recent stash and remove it
+git stash apply stash@{1}    # apply a specific stash, keep it in the list
+git stash drop stash@{1}     # delete a specific stash
+\`\`\`
+
+---
+
+### Useful everyday commands
+
+\`\`\`bash
+# See which branch you're on and what's staged/unstaged
+git status
+
+# Interactively stage chunks of a file (not the whole file)
+git add -p file.txt
+
+# Find which commit introduced a bug using binary search
+git bisect start
+git bisect bad                 # current commit is broken
+git bisect good abc1234        # this commit was fine
+
+# Show who last changed each line of a file
+git blame file.txt
+
+# Search commit messages
+git log --oneline --grep="login"
+
+# Search code changes across history
+git log -S "functionName" --oneline
+\`\`\`
+
+---
+
+### \`.gitignore\`
+
+List files and patterns Git should never track. Common entries:
+
+\`\`\`
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+\`\`\`
+
+Once a file is already tracked, adding it to \`.gitignore\` won't stop Git from watching it. You need to untrack it first:
+
+\`\`\`bash
+git rm --cached file.txt
+\`\`\`
+
+---
+
+### Common gotchas
+
+- **Committing secrets** — if you accidentally commit a secret (API key, password), assume it's compromised. Remove it from history with \`git filter-repo\` and rotate the credential immediately.
+- **Detached HEAD** — happens when you check out a specific commit instead of a branch. Any commits you make won't belong to a branch and can be lost. Run \`git switch -c new-branch\` to save your work.
+- **\`git pull\` creates merge commits** — use \`git pull --rebase\` to keep history linear, or configure it as the default: \`git config --global pull.rebase true\`.
+- **Large files** — Git stores the full content of every version of every file. Don't commit large binaries or build artifacts. Use Git LFS for assets that must be versioned.
+        `.trim(),
     },
     {
         id: 'open-ai',
