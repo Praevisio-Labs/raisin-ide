@@ -1743,19 +1743,915 @@ git rm --cached file.txt
         `.trim(),
     },
     {
-        id: 'open-ai',
-        name: 'OpenAI API',
-        content: 'Learn the basics of...',
-    },
-    {
         id: 'supabase',
         name: 'Supabase',
-        content: 'Learn the basics of...',
+        content: `
+## Supabase Refresher
+
+Supabase is an open-source Firebase alternative built on PostgreSQL. It gives you a hosted database, authentication, file storage, realtime subscriptions, and edge functions — all accessible through a type-safe JavaScript SDK.
+
+---
+
+### Setup
+
+Install the packages:
+
+\`\`\`bash
+npm install @supabase/supabase-js @supabase/ssr
+\`\`\`
+
+Add your project credentials to \`.env.local\`:
+
+\`\`\`
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+\`\`\`
+
+The \`anon\` key is safe to expose to the browser — it's restricted by Row Level Security policies. Never expose the \`service_role\` key on the client.
+
+---
+
+### Creating clients (Next.js App Router)
+
+In the App Router you need two different clients — one for the browser, one for the server — because they handle cookie-based auth sessions differently.
+
+**Browser client** (use in Client Components):
+
+\`\`\`ts
+// lib/supabase/client.ts
+import { createBrowserClient } from '@supabase/ssr'
+
+export function createClient() {
+    return createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+}
+\`\`\`
+
+**Server client** (use in Server Components, Route Handlers, Server Actions):
+
+\`\`\`ts
+// lib/supabase/server.ts
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+
+export async function createClient() {
+    const cookieStore = await cookies()
+    return createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                getAll: () => cookieStore.getAll(),
+                setAll: (cookiesToSet) => {
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        cookieStore.set(name, value, options)
+                    )
+                },
+            },
+        }
+    )
+}
+\`\`\`
+
+---
+
+### Middleware (session refresh)
+
+Add a middleware file to automatically refresh the auth session on every request:
+
+\`\`\`ts
+// middleware.ts
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
+
+export async function middleware(request: NextRequest) {
+    let response = NextResponse.next({ request })
+
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                getAll: () => request.cookies.getAll(),
+                setAll: (cookiesToSet) => {
+                    cookiesToSet.forEach(({ name, value, options }) => {
+                        response.cookies.set(name, value, options)
+                    })
+                },
+            },
+        }
+    )
+
+    await supabase.auth.getUser()
+    return response
+}
+
+export const config = {
+    matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+}
+\`\`\`
+
+---
+
+### Authentication
+
+\`\`\`ts
+const supabase = createClient()
+
+// Sign up
+const { data, error } = await supabase.auth.signUp({
+    email: 'user@example.com',
+    password: 'password123',
+})
+
+// Sign in
+const { data, error } = await supabase.auth.signInWithPassword({
+    email: 'user@example.com',
+    password: 'password123',
+})
+
+// OAuth (Google, GitHub, etc.)
+await supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: { redirectTo: 'https://yourapp.com/auth/callback' },
+})
+
+// Sign out
+await supabase.auth.signOut()
+
+// Get the current user (server-side — always use getUser(), not getSession())
+const { data: { user } } = await supabase.auth.getUser()
+\`\`\`
+
+Always use \`getUser()\` on the server to get the authenticated user — it validates the token with Supabase's servers. \`getSession()\` only reads from the cookie and can be spoofed.
+
+---
+
+### Database queries
+
+Supabase wraps PostgreSQL with a chainable query builder. Every query is async and returns \`{ data, error }\`.
+
+\`\`\`ts
+const supabase = createClient()
+
+// SELECT
+const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+
+// SELECT specific columns
+const { data } = await supabase
+    .from('posts')
+    .select('id, title, created_at')
+
+// SELECT with a join
+const { data } = await supabase
+    .from('posts')
+    .select('id, title, author:profiles(name, avatar_url)')
+
+// WHERE
+const { data } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('published', true)
+    .order('created_at', { ascending: false })
+    .limit(10)
+
+// INSERT
+const { data, error } = await supabase
+    .from('posts')
+    .insert({ title: 'Hello', body: 'World', user_id: user.id })
+    .select()
+    .single()
+
+// UPDATE
+const { error } = await supabase
+    .from('posts')
+    .update({ title: 'Updated title' })
+    .eq('id', postId)
+
+// DELETE
+const { error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', postId)
+\`\`\`
+
+Always check \`error\` before using \`data\`. A successful query with no matching rows returns \`data: []\`, not an error.
+
+---
+
+### Filtering
+
+\`\`\`ts
+.eq('status', 'active')          // =
+.neq('status', 'deleted')        // !=
+.gt('score', 100)                 // >
+.gte('score', 100)                // >=
+.lt('score', 50)                  // <
+.lte('score', 50)                 // <=
+.like('name', '%ada%')            // LIKE (case-sensitive)
+.ilike('name', '%ada%')           // ILIKE (case-insensitive)
+.in('status', ['active', 'pending'])
+.is('deleted_at', null)           // IS NULL
+.not('deleted_at', 'is', null)    // IS NOT NULL
+.contains('tags', ['javascript']) // array contains
+\`\`\`
+
+---
+
+### Row Level Security (RLS)
+
+RLS is PostgreSQL's built-in access control. You define policies that determine which rows a user can read, insert, update, or delete. Without RLS enabled, any user with the \`anon\` key can read all rows.
+
+Enable RLS on a table in the Supabase dashboard, then write policies in SQL:
+
+\`\`\`sql
+-- Users can only read their own posts
+CREATE POLICY "Users can read own posts"
+ON posts FOR SELECT
+USING (auth.uid() = user_id);
+
+-- Users can only insert posts for themselves
+CREATE POLICY "Users can insert own posts"
+ON posts FOR INSERT
+WITH CHECK (auth.uid() = user_id);
+
+-- Users can update their own posts
+CREATE POLICY "Users can update own posts"
+ON posts FOR UPDATE
+USING (auth.uid() = user_id);
+\`\`\`
+
+\`auth.uid()\` returns the ID of the currently authenticated user. RLS policies run on every query — even from the SDK.
+
+---
+
+### TypeScript types
+
+Generate types from your database schema using the Supabase CLI:
+
+\`\`\`bash
+npx supabase gen types typescript --project-id your-project-id > src/types/database.ts
+\`\`\`
+
+Then pass the generated type to \`createClient\`:
+
+\`\`\`ts
+import type { Database } from '@/types/database'
+import { createBrowserClient } from '@supabase/ssr'
+
+export function createClient() {
+    return createBrowserClient<Database>(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+}
+\`\`\`
+
+Now \`.from('posts').select()\` returns fully typed rows — autocomplete, type errors, and all.
+
+---
+
+### Realtime
+
+Subscribe to database changes in real time:
+
+\`\`\`ts
+const supabase = createClient()
+
+const channel = supabase
+    .channel('posts-changes')
+    .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'posts' },
+        (payload) => {
+            console.log('Change received:', payload)
+        }
+    )
+    .subscribe()
+
+// Clean up when done
+supabase.removeChannel(channel)
+\`\`\`
+
+Events: \`INSERT\`, \`UPDATE\`, \`DELETE\`, or \`*\` for all. In React, set up the subscription in a \`useEffect\` and return the cleanup function.
+
+---
+
+### Storage
+
+\`\`\`ts
+const supabase = createClient()
+
+// Upload a file
+const { data, error } = await supabase.storage
+    .from('avatars')
+    .upload(\`\${user.id}/avatar.png\`, file, { upsert: true })
+
+// Get a public URL
+const { data: { publicUrl } } = supabase.storage
+    .from('avatars')
+    .getPublicUrl(\`\${user.id}/avatar.png\`)
+
+// Download a file
+const { data, error } = await supabase.storage
+    .from('avatars')
+    .download(\`\${user.id}/avatar.png\`)
+
+// Delete a file
+await supabase.storage
+    .from('avatars')
+    .remove([\`\${user.id}/avatar.png\`])
+\`\`\`
+
+Storage buckets can be public (anyone can read) or private (requires a signed URL). Set bucket policies in the Supabase dashboard.
+
+---
+
+### Common gotchas
+
+- **Always enable RLS** on tables that hold user data. A table without RLS is fully readable by anyone with your \`anon\` key.
+- **Use \`getUser()\` not \`getSession()\`** on the server to verify authentication — \`getSession()\` trusts the cookie without re-validating.
+- **The \`service_role\` key bypasses RLS** entirely. Never use it in client-side code or expose it in environment variables prefixed with \`NEXT_PUBLIC_\`.
+- **Regenerate types after schema changes.** The generated types go stale as soon as you add or rename a column.
+- **\`single()\` throws if zero or multiple rows match.** Use \`maybeSingle()\` if the row might not exist — it returns \`null\` instead of an error.
+        `.trim(),
+    },
+    {
+        id: 'open-ai',
+        name: 'OpenAI API',
+        content: `
+## OpenAI API Refresher
+
+The OpenAI API gives you programmatic access to models like \`gpt-4o\` and \`gpt-4o-mini\`. You send a request describing what you want, and the model returns a completion. The two main interfaces are the **Chat Completions API** (the long-standing standard) and the newer **Responses API** (introduced in 2025, designed for agentic workflows).
+
+---
+
+### Setup
+
+Install the official Node.js SDK:
+
+\`\`\`bash
+npm install openai
+\`\`\`
+
+Initialize the client. The SDK automatically reads \`OPENAI_API_KEY\` from the environment:
+
+\`\`\`ts
+import OpenAI from 'openai'
+
+const openai = new OpenAI()
+// or explicitly: new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+\`\`\`
+
+Never hardcode your API key or expose it to the browser. Keep it in \`.env.local\` and call the API from a server-side route.
+
+---
+
+### Chat Completions
+
+The Chat Completions API is the foundation. You send an array of **messages**, each with a \`role\` and \`content\`, and get a response back.
+
+\`\`\`ts
+const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: 'What is the capital of France?' },
+    ],
+})
+
+console.log(completion.choices[0].message.content)
+// → "The capital of France is Paris."
+\`\`\`
+
+**Roles:**
+- \`system\` — sets the model's behavior and persona. Processed before user messages.
+- \`user\` — the human's input.
+- \`assistant\` — the model's previous replies (used to maintain conversation history).
+
+**Multi-turn conversation** — the API is stateless, so you must send the full history on every request:
+
+\`\`\`ts
+const messages = [
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'My name is Ada.' },
+    { role: 'assistant', content: 'Nice to meet you, Ada!' },
+    { role: 'user', content: 'What is my name?' },
+]
+
+const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages,
+})
+\`\`\`
+
+---
+
+### Key parameters
+
+\`\`\`ts
+await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [...],
+
+    temperature: 0.7,      // 0 = deterministic, 2 = very random. Default: 1
+    max_tokens: 500,       // cap the response length
+    top_p: 1,              // nucleus sampling — alternative to temperature
+    n: 1,                  // number of completions to generate
+})
+\`\`\`
+
+For factual or structured tasks, lower \`temperature\` (0–0.3). For creative tasks, higher (0.7–1.2). Don't adjust both \`temperature\` and \`top_p\` at the same time.
+
+---
+
+### Streaming
+
+For a better UX, stream the response token by token instead of waiting for the full completion:
+
+\`\`\`ts
+const stream = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [{ role: 'user', content: 'Tell me a short story.' }],
+    stream: true,
+})
+
+for await (const chunk of stream) {
+    const delta = chunk.choices[0]?.delta?.content ?? ''
+    process.stdout.write(delta)
+}
+\`\`\`
+
+In a Next.js Route Handler, use \`ReadableStream\` or the Vercel AI SDK to pipe the stream to the client.
+
+---
+
+### Structured Outputs
+
+When you need the model to return JSON that matches a specific shape, use Structured Outputs with \`response_format\`:
+
+\`\`\`ts
+import { zodResponseFormat } from 'openai/helpers/zod'
+import { z } from 'zod'
+
+const RecipeSchema = z.object({
+    name: z.string(),
+    ingredients: z.array(z.string()),
+    steps: z.array(z.string()),
+})
+
+const completion = await openai.beta.chat.completions.parse({
+    model: 'gpt-4o',
+    messages: [{ role: 'user', content: 'Give me a pasta recipe.' }],
+    response_format: zodResponseFormat(RecipeSchema, 'recipe'),
+})
+
+const recipe = completion.choices[0].message.parsed
+// recipe is fully typed as { name: string, ingredients: string[], steps: string[] }
+\`\`\`
+
+The model is guaranteed to return valid JSON matching the schema — no manual parsing or validation needed.
+
+---
+
+### Function calling (tool use)
+
+Tools let the model request that your code run a function, then incorporate the result into its response. This is how you connect the model to live data or actions.
+
+\`\`\`ts
+const tools = [
+    {
+        type: 'function' as const,
+        function: {
+            name: 'get_weather',
+            description: 'Get the current weather for a city.',
+            parameters: {
+                type: 'object',
+                properties: {
+                    city: { type: 'string', description: 'City name' },
+                },
+                required: ['city'],
+            },
+        },
+    },
+]
+
+const response = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [{ role: 'user', content: 'What is the weather in Tokyo?' }],
+    tools,
+})
+
+const toolCall = response.choices[0].message.tool_calls?.[0]
+if (toolCall) {
+    const args = JSON.parse(toolCall.function.arguments)
+    const result = await getWeather(args.city)  // your function
+
+    // Send the result back to the model
+    const final = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+            { role: 'user', content: 'What is the weather in Tokyo?' },
+            response.choices[0].message,
+            {
+                role: 'tool',
+                tool_call_id: toolCall.id,
+                content: JSON.stringify(result),
+            },
+        ],
+        tools,
+    })
+}
+\`\`\`
+
+---
+
+### The Responses API (2025+)
+
+The Responses API is OpenAI's newer interface, designed for agentic workflows. It manages conversation state on the server, so you don't have to send the full message history on every request.
+
+\`\`\`ts
+// First turn
+const response = await openai.responses.create({
+    model: 'gpt-4o',
+    input: 'My name is Ada.',
+})
+
+console.log(response.output_text)
+// → "Nice to meet you, Ada!"
+
+// Continue the conversation using the previous response ID
+const followUp = await openai.responses.create({
+    model: 'gpt-4o',
+    previous_response_id: response.id,
+    input: 'What is my name?',
+})
+
+console.log(followUp.output_text)
+// → "Your name is Ada."
+\`\`\`
+
+Use Chat Completions when you need full control over message history or are building on an existing codebase. Use the Responses API for new agentic projects where server-managed state simplifies your architecture.
+
+---
+
+### Embeddings
+
+Embeddings convert text into a vector of numbers that captures semantic meaning. Similar texts produce similar vectors — useful for search, clustering, and retrieval-augmented generation (RAG).
+
+\`\`\`ts
+const embedding = await openai.embeddings.create({
+    model: 'text-embedding-3-small',
+    input: 'The quick brown fox',
+})
+
+const vector = embedding.data[0].embedding  // float[]
+\`\`\`
+
+To find similar texts, compute the **cosine similarity** between their vectors. Store vectors in a vector database (Supabase pgvector, Pinecone, etc.) for efficient similarity search at scale.
+
+---
+
+### Choosing a model
+
+| Model | Best for |
+|-------|---------|
+| \`gpt-4o\` | Complex reasoning, structured outputs, tool use |
+| \`gpt-4o-mini\` | Fast, cheap, good for most tasks |
+| \`o3\` / \`o4-mini\` | Deep reasoning, math, code — slower and pricier |
+| \`text-embedding-3-small\` | Embeddings — fast and cost-effective |
+| \`text-embedding-3-large\` | Embeddings — higher accuracy |
+
+Start with \`gpt-4o-mini\` for development. Switch to \`gpt-4o\` when you need better reasoning or structured output reliability.
+
+---
+
+### Error handling
+
+\`\`\`ts
+import OpenAI from 'openai'
+
+try {
+    const completion = await openai.chat.completions.create({ ... })
+} catch (error) {
+    if (error instanceof OpenAI.APIError) {
+        console.error(error.status)   // 429, 500, etc.
+        console.error(error.message)
+        console.error(error.code)     // 'rate_limit_exceeded', etc.
+    }
+}
+\`\`\`
+
+Common errors:
+- \`401\` — invalid API key
+- \`429\` — rate limit or quota exceeded; implement exponential backoff
+- \`500\` / \`503\` — OpenAI server error; retry with backoff
+
+---
+
+### Common gotchas
+
+- **Never call the API from the browser.** Your API key would be exposed in the network tab. Always proxy through a server-side route.
+- **Token limits apply to the full context** — system prompt + all messages + response. If you hit the limit, you need to truncate or summarize older messages.
+- **Temperature 0 is not truly deterministic.** The model can still produce slightly different outputs on repeated calls.
+- **Structured Outputs require \`gpt-4o\` or newer.** Older models don't support the \`response_format\` schema guarantee.
+- **Tool call arguments are a JSON string**, not an object — always \`JSON.parse(toolCall.function.arguments)\` before using them.
+        `.trim(),
     },
     {
         id: 'ai-sdk',
         name: 'Vercel AI SDK',
-        content: 'Learn the basics of...',
+        content: `
+## Vercel AI SDK Refresher
+
+The Vercel AI SDK is an open-source TypeScript toolkit for building AI-powered applications. It gives you a unified API across providers (OpenAI, Anthropic, Google, etc.), streaming primitives, React hooks for chat UIs, tool calling, and structured output — all with first-class Next.js support.
+
+The current version is **AI SDK 6**, which shifted from REST API routes to React Server Actions as the primary pattern.
+
+---
+
+### Installation
+
+Install the core package and the provider(s) you need:
+
+\`\`\`bash
+npm install ai @ai-sdk/openai
+# Other providers:
+# npm install @ai-sdk/anthropic
+# npm install @ai-sdk/google
+\`\`\`
+
+Configure your API key in \`.env.local\`:
+
+\`\`\`
+OPENAI_API_KEY=sk-...
+\`\`\`
+
+---
+
+### Package structure
+
+The SDK is split into three layers:
+
+| Package | What it does |
+|---------|-------------|
+| \`ai\` | Core functions: \`generateText\`, \`streamText\`, hooks |
+| \`@ai-sdk/openai\` | OpenAI provider (GPT-4o, embeddings, etc.) |
+| \`@ai-sdk/anthropic\` | Anthropic provider (Claude) |
+| \`@ai-sdk/google\` | Google provider (Gemini) |
+
+Swapping providers is a one-line change — the rest of your code stays the same.
+
+---
+
+### Generating text (server-side)
+
+\`generateText\` is for non-streaming, one-shot completions. Use it in Server Components, Server Actions, or Route Handlers.
+
+\`\`\`ts
+import { generateText } from 'ai'
+import { openai } from '@ai-sdk/openai'
+
+const { text } = await generateText({
+    model: openai('gpt-4o-mini'),
+    prompt: 'Explain closures in JavaScript in two sentences.',
+})
+
+console.log(text)
+\`\`\`
+
+For multi-turn conversations, use \`messages\` instead of \`prompt\`:
+
+\`\`\`ts
+const { text } = await generateText({
+    model: openai('gpt-4o'),
+    system: 'You are a helpful coding assistant.',
+    messages: [
+        { role: 'user', content: 'What is a closure?' },
+        { role: 'assistant', content: 'A closure is...' },
+        { role: 'user', content: 'Can you give me an example?' },
+    ],
+})
+\`\`\`
+
+---
+
+### Streaming text (server-side)
+
+\`streamText\` returns a stream you can pipe to the client. This is the foundation of chat UIs.
+
+\`\`\`ts
+import { streamText } from 'ai'
+import { openai } from '@ai-sdk/openai'
+
+const result = streamText({
+    model: openai('gpt-4o'),
+    prompt: 'Write a haiku about TypeScript.',
+})
+
+// In a Route Handler:
+return result.toDataStreamResponse()
+
+// Consume the stream directly (e.g. in a script):
+for await (const chunk of result.textStream) {
+    process.stdout.write(chunk)
+}
+\`\`\`
+
+---
+
+### Building a chat UI with \`useChat\`
+
+In AI SDK 6, \`useChat\` connects to a **Server Action** instead of an API route. This gives you end-to-end type safety with no URL to configure.
+
+**Server Action:**
+
+\`\`\`ts
+// app/actions/chat.ts
+'use server'
+
+import { streamText } from 'ai'
+import { openai } from '@ai-sdk/openai'
+
+export async function chat(messages: { role: string; content: string }[]) {
+    const result = streamText({
+        model: openai('gpt-4o'),
+        system: 'You are a helpful assistant.',
+        messages,
+    })
+
+    return result.toDataStream()
+}
+\`\`\`
+
+**Client Component:**
+
+\`\`\`tsx
+'use client'
+
+import { useChat } from 'ai/react'
+import { chat } from '@/app/actions/chat'
+
+export default function ChatUI() {
+    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+        api: chat,  // pass the Server Action directly — no URL needed
+    })
+
+    return (
+        <div>
+            <ul>
+                {messages.map((m) => (
+                    <li key={m.id}>
+                        <strong>{m.role}:</strong> {m.content}
+                    </li>
+                ))}
+            </ul>
+
+            <form onSubmit={handleSubmit}>
+                <input
+                    value={input}
+                    onChange={handleInputChange}
+                    placeholder="Ask something..."
+                    disabled={isLoading}
+                />
+                <button type="submit" disabled={isLoading}>Send</button>
+            </form>
+        </div>
+    )
+}
+\`\`\`
+
+\`useChat\` manages the message array, input state, loading state, and streaming updates automatically.
+
+---
+
+### Structured output
+
+Use \`generateText\` with the \`output\` option and a Zod schema to get typed, validated JSON back from the model. (\`generateObject\` is deprecated as of v6 — use this pattern instead.)
+
+\`\`\`ts
+import { generateText } from 'ai'
+import { openai } from '@ai-sdk/openai'
+import { z } from 'zod'
+
+const { object } = await generateText({
+    model: openai('gpt-4o'),
+    output: z.object({
+        title: z.string(),
+        tags: z.array(z.string()),
+        difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
+    }),
+    prompt: 'Classify this article: "An intro to React hooks"',
+})
+
+console.log(object.title)      // typed as string
+console.log(object.difficulty) // typed as 'beginner' | 'intermediate' | 'advanced'
+\`\`\`
+
+---
+
+### Tool calling
+
+Tools let the model call your functions to fetch data or take actions. Define them with \`tool()\` from the \`ai\` package:
+
+\`\`\`ts
+import { generateText, tool } from 'ai'
+import { openai } from '@ai-sdk/openai'
+import { z } from 'zod'
+
+const { text } = await generateText({
+    model: openai('gpt-4o'),
+    prompt: 'What is the weather in Tokyo?',
+    tools: {
+        getWeather: tool({
+            description: 'Get the current weather for a city.',
+            parameters: z.object({
+                city: z.string().describe('The city name'),
+            }),
+            execute: async ({ city }) => {
+                // call your weather API here
+                return { city, temperature: 22, condition: 'Sunny' }
+            },
+        }),
+    },
+    maxSteps: 3,  // allow the model to call tools and continue reasoning
+})
+\`\`\`
+
+\`maxSteps\` controls how many tool call + response cycles the model can make before returning. Without it, the model stops after the first tool call.
+
+---
+
+### Switching providers
+
+Because all providers implement the same interface, swapping is a one-line change:
+
+\`\`\`ts
+import { openai } from '@ai-sdk/openai'
+import { anthropic } from '@ai-sdk/anthropic'
+import { google } from '@ai-sdk/google'
+
+// Pick one:
+const model = openai('gpt-4o')
+const model = anthropic('claude-3-5-sonnet-20241022')
+const model = google('gemini-2.0-flash')
+
+// The rest of your code is identical
+const { text } = await generateText({ model, prompt: '...' })
+\`\`\`
+
+---
+
+### Embeddings
+
+\`\`\`ts
+import { embed, embedMany } from 'ai'
+import { openai } from '@ai-sdk/openai'
+
+// Single embedding
+const { embedding } = await embed({
+    model: openai.embedding('text-embedding-3-small'),
+    value: 'The quick brown fox',
+})
+
+// Batch embeddings
+const { embeddings } = await embedMany({
+    model: openai.embedding('text-embedding-3-small'),
+    values: ['First document', 'Second document', 'Third document'],
+})
+\`\`\`
+
+---
+
+### Error handling
+
+\`\`\`ts
+import { generateText, APICallError } from 'ai'
+
+try {
+    const { text } = await generateText({ model, prompt })
+} catch (error) {
+    if (APICallError.isInstance(error)) {
+        console.error(error.statusCode)  // 429, 500, etc.
+        console.error(error.message)
+    }
+}
+\`\`\`
+
+---
+
+### Common gotchas
+
+- **\`generateObject\` is deprecated in v6.** Use \`generateText\` with the \`output\` option and a Zod schema instead.
+- **\`StreamingTextResponse\` is removed in v6.** Use \`result.toDataStreamResponse()\` in Route Handlers, or pass a Server Action directly to \`useChat\`.
+- **\`maxSteps\` is required for multi-step tool use.** Without it, the model stops after the first tool call and returns the tool call result rather than a final text response.
+- **Provider packages are separate.** You must install \`@ai-sdk/openai\` (or whichever provider) in addition to \`ai\` — the core package ships with no providers bundled.
+- **Server Actions must be \`async\` and marked \`'use server'\`.** Forgetting either will cause a runtime error when \`useChat\` tries to call them.
+        `.trim(),
     },
     {
         id: 'aws-development',
