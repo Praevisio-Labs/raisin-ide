@@ -29,7 +29,7 @@ export default function Project({
                     {project.name}
                 </h2>
             </div>
-            <div className="flex-1 flex flex-col gap-12 p-3">
+            <div className="flex-1 flex flex-col gap-12 p-3 overflow-y-auto">
                 {project.skills.map((projectSkill) => {
                     const thisSkill = skillsData.find(
                         (skill) => skill.id === projectSkill,
