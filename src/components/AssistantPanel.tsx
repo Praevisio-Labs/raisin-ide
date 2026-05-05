@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { AssistantProps } from '@/types/components'
-import RaisinIcon from '@/app/ui/RaisinIcon'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
+import { scrollMask } from '@/app/ui/styles'
+import { AssistantProps } from '@/types/components'
+
+import RaisinIcon from '@/app/ui/RaisinIcon'
 import TypingIndicator from '@/components/TypingIndicator'
 
 export default function AssistantPanel({ theme }: AssistantProps) {
@@ -75,10 +77,7 @@ export default function AssistantPanel({ theme }: AssistantProps) {
                 />
                 <div
                     className="flex-1 w-full overflow-y-auto flex flex-col py-2"
-                    style={{
-                        maskImage:
-                            'linear-gradient(to bottom, transparent, black 2%, black 98%, transparent)',
-                    }}>
+                    style={scrollMask}>
                     {messages.map((msg, index) => (
                         <div
                             key={index}

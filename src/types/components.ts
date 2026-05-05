@@ -1,4 +1,4 @@
-import { File, Project, Skill, Aside } from './index'
+import { Link, File, Project, Skill, Aside } from './index'
 
 export interface HeaderProps {
     theme: string
@@ -78,4 +78,5 @@ export interface MarkdownProps {
 export interface AsideProps {
     type: Aside
     content: string
+    link?: Link
 }

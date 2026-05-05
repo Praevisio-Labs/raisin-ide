@@ -9,6 +9,11 @@ export type Language =
     | 'json'
     | 'sql'
 
+export type Link = {
+    href: string
+    text: string
+}
+
 export type File = {
     name: string
     fileType: Language

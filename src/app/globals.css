@@ -46,13 +46,13 @@
 }
 
 /* raisin */
-@source inline("bg-dark-page bg-dark-editor bg-dark-panel bg-dark-input bg-dark-gap bg-dark-card bg-dark-font-primary bg-dark-accent-primary bg-dark-message text-dark-font-primary text-dark-font-secondary text-dark-font-tertiary text-dark-card border-dark-accent-primary border-dark-accent-secondary border-dark-gap");
-@source inline("prose-p:text-dark-font-secondary prose-headings:text-dark-font-tertiary prose-strong:text-dark-font-primary prose-code:text-dark-accent-primary prose-li:text-dark-font-secondary prose-a:text-dark-accent-primary");
+@source inline("bg-raisin-page bg-raisin-editor bg-raisin-panel bg-raisin-input bg-raisin-gap bg-raisin-card bg-raisin-font-primary bg-raisin-accent-primary bg-raisin-message text-raisin-font-primary text-raisin-font-secondary text-raisin-font-tertiary text-raisin-card text-raisin-page border-raisin-accent-primary border-raisin-accent-secondary border-raisin-gap hover:bg-raisin-accent-primary hover:text-raisin-page");
+@source inline("prose-p:text-raisin-font-secondary prose-headings:text-raisin-font-tertiary prose-strong:text-raisin-font-primary prose-code:text-raisin-accent-primary prose-li:text-raisin-font-secondary prose-a:text-raisin-accent-primary");
 
 /* dark */
-@source inline("bg-light-page bg-light-editor bg-light-panel bg-light-input bg-light-gap bg-light-card bg-light-font-primary bg-light-accent-primary bg-light-message text-light-font-primary text-light-font-secondary text-light-font-tertiary text-light-card border-light-accent-primary border-light-accent-secondary border-light-gap");
-@source inline("prose-p:text-light-font-secondary prose-headings:text-light-font-tertiary prose-strong:text-light-font-primary prose-code:text-light-accent-primary prose-li:text-light-font-secondary prose-a:text-light-accent-primary");
+@source inline("bg-dark-page bg-dark-editor bg-dark-panel bg-dark-input bg-dark-gap bg-dark-card bg-dark-font-primary bg-dark-accent-primary bg-dark-message text-dark-font-primary text-dark-font-secondary text-dark-font-tertiary text-dark-card text-dark-page border-dark-accent-primary border-dark-accent-secondary border-dark-gap hover:bg-dark-accent-primary hover:text-dark-page");
+@source inline("prose-p:text-dark-font-secondary prose-headings:text-dark-font-tertiary prose-strong:text-dark-font-primary prose-code:text-dark-accent-primary prose-li:text-dark-font-secondary prose-a:text-dark-accent-primary");
 
 /* light */
-@source inline("bg-raisin-page bg-raisin-editor bg-raisin-panel bg-raisin-input bg-raisin-gap bg-raisin-card bg-raisin-font-primary bg-raisin-accent-primary bg-raisin-message text-raisin-font-primary text-raisin-font-secondary text-raisin-font-tertiary text-raisin-card border-raisin-accent-primary border-raisin-accent-secondary border-raisin-gap");
-@source inline("prose-p:text-raisin-font-secondary prose-headings:text-raisin-font-tertiary prose-strong:text-raisin-font-primary prose-code:text-raisin-accent-primary prose-li:text-raisin-font-secondary prose-a:text-raisin-accent-primary");
+@source inline("bg-light-page bg-light-editor bg-light-panel bg-light-input bg-light-gap bg-light-card bg-light-font-primary bg-light-accent-primary bg-light-message text-light-font-primary text-light-font-secondary text-light-font-tertiary text-light-card text-light-page border-light-accent-primary border-light-accent-secondary border-light-gap hover:bg-light-accent-primary hover:text-light-page");
+@source inline("prose-p:text-light-font-secondary prose-headings:text-light-font-tertiary prose-strong:text-light-font-primary prose-code:text-light-accent-primary prose-li:text-light-font-secondary prose-a:text-light-accent-primary");

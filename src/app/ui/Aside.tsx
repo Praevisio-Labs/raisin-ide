@@ -34,7 +34,7 @@ function styleLookup(type: Aside) {
     }
 }
 
-export default function Aside({ type, content }: AsideProps) {
+export default function Aside({ type, content, link }: AsideProps) {
     const { border, bg, label, labelColor, Icon } = styleLookup(type)
 
     return (
@@ -51,6 +51,13 @@ export default function Aside({ type, content }: AsideProps) {
                     {label}
                 </span>
                 <p className="text-slate-300 leading-relaxed">{content}</p>
+                {link && (
+                    <a
+                        href={link.href}
+                        className="underline cursor-pointer text-slate-300">
+                        {link.text}
+                    </a>
+                )}
             </div>
         </aside>
     )
