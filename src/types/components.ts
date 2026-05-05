@@ -1,4 +1,11 @@
-import { File } from './index'
+import { Link, File, Project, Skill, Aside } from './index'
+
+export interface HeaderProps {
+    theme: string
+    setTheme: (theme: string) => void
+    path: string
+    linkText: string
+}
 
 export interface FileTreeProps {
     files: File[]
@@ -32,4 +39,48 @@ export interface FileIconProps {
 
 export interface TypingIndicatorProps {
     theme: string
+}
+
+export interface ModuleProps {
+    theme: string
+    id?: string
+    name?: string
+    description?: string
+    skills?: string[]
+    files?: File[]
+    onClick: () => void
+}
+
+export interface DashboardProps {
+    theme: string
+    setTheme: (theme: string) => void
+    onClick: (id: string) => void
+}
+
+export interface ProjectProps {
+    theme: string
+    setTheme: (theme: string) => void
+    project: Project
+    onClick: () => void
+}
+
+export interface SkillProps {
+    theme: string
+    name?: string
+    content: string
+}
+
+export interface MarkdownProps {
+    theme: string
+    content: string
+}
+
+export interface AsideProps {
+    type: Aside
+    content: string
+    link?: Link
+}
+
+export interface ScrollTopProps {
+    targetId: string
 }

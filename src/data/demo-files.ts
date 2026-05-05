@@ -1,6 +1,6 @@
 import type { File } from '@/types/index'
 
-export const FILES: File[] = [
+export const DEMO_FILES: File[] = [
     {
         name: 'page.tsx',
         fileType: 'typescript',

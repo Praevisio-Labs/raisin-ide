@@ -1,16 +1,17 @@
-<br/>
+<br>
 
 <div id="raisin-logo" align="center">
-    <br />
-    <img src="./public/brand-slogan.png" alt="Raisin.IDE Logo" width="300"/>
-    <h3>Raisin.IDE</h3>
+
+<img src="./public/logo-color.svg" alt="Raisin.IDE Logo" width="50"/>  
+
+<h3>Raisin.IDE</h3>
 </div>
 
 <div id="tagline" align="center">
-
 <em>Rethinking Coding Education for the AI Era</em>
-
 </div>
+
+<br>
 
 > **Live Demo:** https://raisin-ide.vercel.app/
 
@@ -45,3 +46,11 @@ Raisin.IDE is a bet on the fact that for this latter group of folks, a solution 
 Raisin.IDE is also a bet that learning to code will still be important despite how the role of coders will change in the age of AI.
 
 Read our full thesis here: [blog.stackademic.com](https://blog.stackademic.com/rethinking-coding-education-for-the-ai-era-054b40a350d5).
+
+<br>
+
+<div id="praevisio-logo" align="left">
+
+<img src="./public/brand-slogan.png" alt="Praevisio.Labs Logo" width="250"/>  
+
+</div>
