@@ -1,4 +1,4 @@
-import { File, Project } from './index'
+import { File, Project, Skill } from './index'
 
 export interface HeaderProps {
     theme: string
@@ -62,4 +62,10 @@ export interface ProjectProps {
     setTheme: (theme: string) => void
     project: Project
     onClick: () => void
+}
+
+export interface SkillProps {
+    theme: string
+    name: string
+    content: string
 }

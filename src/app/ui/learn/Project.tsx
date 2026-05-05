@@ -1,9 +1,10 @@
-import { ibmPlexMono, manrope } from '@/app/ui/fonts'
+import { ibmPlexMono } from '@/app/ui/fonts'
 import { ProjectProps } from '@/types/components'
 import { skillsData } from '@/data/modules'
 import Header from '@/app/ui/Header'
+import Skill from '@/app/ui/learn/Skill'
 
-export default function LearnProject({
+export default function Project({
     theme,
     setTheme,
     project,
@@ -33,16 +34,14 @@ export default function LearnProject({
                     const thisSkill = skillsData.find(
                         (skill) => skill.id === projectSkill,
                     )
+                    if (!thisSkill) return
                     return (
-                        <div
-                            key={project.id}
-                            className="flex flex-col text-lg font-semibold gap-2">
-                            <h1
-                                className={`${manrope.className} text-${theme}-font-tertiary`}>
-                                {thisSkill?.name}
-                            </h1>
-                            <div className="text-sm font-normal">{`<Content/>`}</div>
-                        </div>
+                        <Skill
+                            key={thisSkill.id}
+                            theme={theme}
+                            name={thisSkill.name}
+                            content={thisSkill.content}
+                        />
                     )
                 })}
             </div>

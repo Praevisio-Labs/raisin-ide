@@ -2,8 +2,8 @@
 
 import { useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import Dashboard from '@/components/LearnDashboard'
-import Project from '@/components/LearnProject'
+import Dashboard from '@/app/ui/learn/Dashboard'
+import Project from '@/app/ui/learn/Project'
 import { projectData } from '@/data/modules'
 
 function Page() {

@@ -22,3 +22,9 @@ export type Project = {
     skills: string[]
     files: File[]
 }
+
+export type Skill = {
+    id: string
+    name: string
+    content: string
+}

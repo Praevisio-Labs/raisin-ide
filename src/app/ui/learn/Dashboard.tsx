@@ -4,7 +4,7 @@ import { projectData } from '@/data/modules'
 import Header from '@/app/ui/Header'
 import ModuleCard from '@/components/ModuleCard'
 
-export default function LearnDashboard({
+export default function Dashboard({
     theme,
     setTheme,
     onClick,
