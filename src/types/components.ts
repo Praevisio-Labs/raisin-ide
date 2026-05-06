@@ -40,6 +40,8 @@ export interface FileIconProps {
 
 export interface TypingIndicatorProps {
     theme: string
+    status: string
+    messages: UIMessage[]
 }
 
 export interface ModuleProps {

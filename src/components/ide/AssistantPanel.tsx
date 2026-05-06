@@ -54,23 +54,33 @@ export default function AssistantPanel({ theme }: AssistantProps) {
                 <div
                     className="flex-1 w-full overflow-y-auto flex flex-col py-2"
                     style={scrollMask}>
-                    {messages.map((msg) => (
-                        <div
-                            key={msg.id}
-                            className={`
-                            text-xs text-${theme}-font-primary px-2.5 py-1
-                            ${msg.role === 'user' ? userStyle : assistantStyle}
-                            `}>
-                            {msg.parts.map((part, index) =>
-                                part.type === 'text' ? (
-                                    <span key={index}>{part.text}</span>
-                                ) : null,
-                            )}
-                        </div>
-                    ))}
-                    {status === 'streaming' && (
-                        <TypingIndicator theme={theme} />
-                    )}
+                    {messages.map((msg) => {
+                        const hasText = msg.parts.some(
+                            (part) =>
+                                part.type === 'text' && part.text.length > 0,
+                        )
+                        if (!hasText) return null
+
+                        return (
+                            <div
+                                key={msg.id}
+                                className={`
+                                text-xs text-${theme}-font-primary px-2.5 py-1
+                                ${msg.role === 'user' ? userStyle : assistantStyle}
+                                `}>
+                                {msg.parts.map((part, index) =>
+                                    part.type === 'text' ? (
+                                        <span key={index}>{part.text}</span>
+                                    ) : null,
+                                )}
+                            </div>
+                        )
+                    })}
+                    <TypingIndicator
+                        theme={theme}
+                        status={status}
+                        messages={messages}
+                    />
                     <div ref={scrollRef}></div>
                 </div>
                 <form
