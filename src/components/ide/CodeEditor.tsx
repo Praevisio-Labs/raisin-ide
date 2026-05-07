@@ -5,6 +5,7 @@ export default function CodeEditor({
     file,
     theme,
     onCursorChange,
+    onSelectionChange,
 }: EditorProps) {
     const editorTheme = theme == 'light' ? 'vs' : 'vs-dark'
 
@@ -13,6 +14,16 @@ export default function CodeEditor({
         editor.onDidChangeCursorPosition((e) => {
             if (onCursorChange) {
                 onCursorChange(e.position.lineNumber)
+            }
+        })
+        editor.onDidChangeCursorSelection((e) => {
+            if (!e.selection.isEmpty()) {
+                const model = editor.getModel()
+                if (!model) return
+                const selection = model.getValueInRange(e.selection)
+                if (onSelectionChange) {
+                    onSelectionChange(selection)
+                }
             }
         })
     }

@@ -22,6 +22,7 @@ function Page() {
     const [selected, setSelected] = useState(workspaceFiles[0])
     const [theme, setTheme] = useState('raisin')
     const [cursorLine, setCursorLine] = useState(1)
+    const [selectedText, setSelectedText] = useState('')
 
     return (
         <main
@@ -44,10 +45,24 @@ function Page() {
                 </div>
                 <div
                     className={`flex-4 h-full flex flex-col rounded-sm  overflow-hidden bg-${theme}-editor`}>
+                    {/* NTD: debug */}
+                    <div className="text-xs text-white p-2">
+                        Temp Debug Block
+                        <p className="text-xs text-white p-2">
+                            <span className="text-blue-400">Line: </span>
+                            {cursorLine}
+                        </p>
+                        <p className="text-xs text-white p-2">
+                            <span className="text-blue-400">Highlighted: </span>
+                            {selectedText}
+                        </p>
+                    </div>
+
                     <CodeEditor
                         file={selected}
                         theme={theme}
                         onCursorChange={setCursorLine}
+                        onSelectionChange={setSelectedText}
                     />
                 </div>
                 <div

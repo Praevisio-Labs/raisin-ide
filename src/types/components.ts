@@ -19,6 +19,7 @@ export interface EditorProps {
     file: File
     theme: string
     onCursorChange?: (line: number) => void
+    onSelectionChange?: (text: string) => void
 }
 
 export interface AssistantProps {
