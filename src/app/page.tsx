@@ -67,7 +67,11 @@ function Page() {
                 </div>
                 <div
                     className={`flex-3 h-full flex flex-col gap-2 rounded-sm rounded-br-xl overflow-hidden bg-${theme}-panel`}>
-                    <AssistantPanel theme={theme} />
+                    <AssistantPanel
+                        theme={theme}
+                        file={selected}
+                        cursorLine={cursorLine}
+                    />
                 </div>
             </div>
         </main>

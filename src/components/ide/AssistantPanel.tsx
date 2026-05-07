@@ -11,7 +11,11 @@ import RaisinIcon from '@/components/RaisinIcon'
 import LoadingIndicator from '@/components/ide/LoadingIndicator'
 import Markdown from '@/components/Markdown'
 
-export default function AssistantPanel({ theme }: AssistantProps) {
+export default function AssistantPanel({
+    theme,
+    file,
+    cursorLine,
+}: AssistantProps) {
     const [input, setInput] = useState('')
 
     const { messages, sendMessage, status } = useChat({
@@ -64,7 +68,7 @@ export default function AssistantPanel({ theme }: AssistantProps) {
                 <div
                     className="flex-1 w-full overflow-y-auto flex flex-col py-2"
                     style={scrollMask}>
-                    {messages.map((msg, index) => {
+                    {messages.map((msg) => {
                         const textContent = msg.parts
                             .filter(isTextUIPart)
                             .map((part) => part.text)
@@ -101,13 +105,22 @@ export default function AssistantPanel({ theme }: AssistantProps) {
                     <div ref={scrollRef}></div>
                 </div>
                 <form
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        if (input.trim()) {
-                            sendMessage({ text: input })
-                            setInput('')
-                        }
-                    }}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    if (input.trim()) {
+                        sendMessage(
+                            { text: input },
+                            {
+                                body: {
+                                    fileName: file.name,
+                                    fileContent: file.content,
+                                    cursorLine,
+                                },
+                            },
+                        )
+                        setInput('')
+                    }
+                }}
                     className={`flex-none w-[88%] flex rounded-sm overflow-hidden bg-${theme}-input my-4`}>
                     <input
                         type="text"

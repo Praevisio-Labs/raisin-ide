@@ -24,6 +24,8 @@ export interface EditorProps {
 
 export interface AssistantProps {
     theme: string
+    file: File
+    cursorLine: number
 }
 
 export interface ThemeProps {
