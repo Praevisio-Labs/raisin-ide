@@ -2,8 +2,8 @@ import { streamText, convertToModelMessages } from 'ai'
 import { openai } from '@ai-sdk/openai'
 import { bedrock } from '@ai-sdk/amazon-bedrock'
 import { StreamingResponseProps } from '@/types/components'
-import { MODELS } from '@/data/models'
-import { outputFormat, systemGuardrail, systemPersona } from '@/data/prompts'
+import { MODELS } from '@/data/ai/models'
+import { outputFormat, systemGuardrail, systemPersona } from '@/data/ai/prompts'
 
 const bedrockModel = MODELS.bedrock.haiku
 const openaiModel = MODELS.openai.fast

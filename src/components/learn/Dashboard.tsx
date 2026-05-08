@@ -1,5 +1,5 @@
 import { DashboardProps } from '@/types/components'
-import { projectData } from '@/data/project-modules'
+import { projectData } from '@/data/learn/project-modules'
 
 import Header from '@/components/Header'
 import ModuleCard from '@/components/learn/ModuleCard'

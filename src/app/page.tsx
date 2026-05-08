@@ -3,8 +3,8 @@
 import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
-import { DEMO_FILES } from '@/data/demo-files'
-import { projectData } from '@/data/project-modules'
+import { DEMO_FILES } from '@/data/ide/demo-files'
+import { projectData } from '@/data/learn/project-modules'
 import Header from '@/components/Header'
 import FileTree from '@/components/ide/FileTree'
 import CodeEditor from '@/components/ide/CodeEditor'

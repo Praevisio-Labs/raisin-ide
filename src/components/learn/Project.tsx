@@ -1,6 +1,6 @@
 import { sora, outfit } from '@/app/ui/fonts'
 import { ProjectProps } from '@/types/components'
-import { skillsData } from '@/data/skill-modules'
+import { skillsData } from '@/data/learn/skill-modules'
 import { scrollMask } from '@/app/ui/styles'
 
 import Header from '@/components/Header'
@@ -79,7 +79,7 @@ export default function Project({
                             Start Project
                         </button>
                     </div>
-                    <ScrollTop targetId='project-overview' />
+                    <ScrollTop targetId="project-overview" />
                 </div>
             </div>
         </main>
