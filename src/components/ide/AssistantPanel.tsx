@@ -1,15 +1,15 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useChat } from '@ai-sdk/react'
-import { DefaultChatTransport, type UIMessage, isTextUIPart } from 'ai'
+import { DefaultChatTransport } from 'ai'
+
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
-import { scrollMask } from '@/app/ui/styles'
 import { AssistantPanelProps } from '@/types/components'
+import { defaultMessage } from '@/data/placeholder'
 
 import RaisinIcon from '@/components/RaisinIcon'
-import LoadingIndicator from '@/components/ide/LoadingIndicator'
-import Markdown from '@/components/Markdown'
+import ChatDisplay from '@/components/ide/ChatDisplay'
 
 export default function AssistantPanel({
     theme,
@@ -20,41 +20,9 @@ export default function AssistantPanel({
     const [input, setInput] = useState('')
 
     const { messages, sendMessage, status } = useChat({
-        messages: [
-            {
-                id: 'init',
-                role: 'assistant',
-                parts: [
-                    {
-                        type: 'text',
-                        text: 'Hi! What are we building today?',
-                    },
-                ],
-            },
-        ] as UIMessage[],
+        messages: defaultMessage,
         transport: new DefaultChatTransport({ api: '/api/chat' }),
     })
-
-    const scrollRef = useRef<HTMLDivElement>(null)
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollIntoView({
-                behavior: 'smooth',
-            })
-        }
-    }, [messages, status])
-
-    const isStreaming = status === 'submitted' || status === 'streaming'
-    const lastMessage = messages[messages.length - 1]
-    const lastAssistantHasText =
-        lastMessage?.role === 'assistant' &&
-        lastMessage.parts.some(
-            (part) => isTextUIPart(part) && part.text.length > 0,
-        )
-    const showLoadingIndicator = isStreaming && !lastAssistantHasText
-
-    const userStyle = `max-w-[85%] self-end rounded-sm bg-${theme}-message opacity-90 mt-6`
-    const assistantStyle = 'self-start mt-3'
 
     return (
         <>
@@ -66,45 +34,11 @@ export default function AssistantPanel({
                 <RaisinIcon
                     className={`flex-none h-8 w-8 text-${theme}-font-primary m-4`}
                 />
-                <div
-                    className="flex-1 w-full overflow-y-auto flex flex-col py-2"
-                    style={scrollMask}>
-                    {messages.map((msg) => {
-                        const textContent = msg.parts
-                            .filter(isTextUIPart)
-                            .map((part) => part.text)
-                            .join('')
-
-                        if (!textContent) return null // prevent first empty msg from rendering
-
-                        if (msg.role === 'user') {
-                            return (
-                                <div
-                                    key={msg.id}
-                                    className={`text-xs text-${theme}-font-primary px-2.5 py-1 ${userStyle}`}>
-                                    <span>{textContent}</span>
-                                </div>
-                            )
-                        }
-
-                        return (
-                            <div
-                                key={msg.id}
-                                className={`px-2.5 ${assistantStyle}`}>
-                                <Markdown
-                                    theme={theme}
-                                    content={textContent}
-                                    size={'xs'}
-                                />
-                            </div>
-                        )
-                    })}
-                    <LoadingIndicator
-                        theme={theme}
-                        show={showLoadingIndicator}
-                    />
-                    <div ref={scrollRef}></div>
-                </div>
+                <ChatDisplay
+                    theme={theme}
+                    messages={messages}
+                    status={status}
+                />
                 <form
                     onSubmit={(e) => {
                         e.preventDefault()

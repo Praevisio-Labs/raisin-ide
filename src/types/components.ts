@@ -30,6 +30,12 @@ export interface AssistantPanelProps {
     fileContent: string
 }
 
+export interface ChatDisplayProps {
+    theme: string
+    messages: UIMessage[]
+    status: string
+}
+
 export interface AgentContextDisplayProps {
     theme: string
     file: File

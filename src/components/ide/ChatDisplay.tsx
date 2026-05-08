@@ -1,0 +1,74 @@
+'use client'
+
+import { useRef, useEffect } from 'react'
+
+import { isTextUIPart } from 'ai'
+import { ChatDisplayProps } from '@/types/components'
+import { scrollMask } from '@/app/ui/styles'
+
+import LoadingIndicator from '@/components/ide/LoadingIndicator'
+import Markdown from '@/components/Markdown'
+
+export default function ChatDisplay({
+    theme,
+    messages,
+    status,
+}: ChatDisplayProps) {
+    const isStreaming = status === 'submitted' || status === 'streaming'
+    const lastMessage = messages[messages.length - 1]
+    const lastAssistantHasText =
+        lastMessage?.role === 'assistant' &&
+        lastMessage.parts.some(
+            (part) => isTextUIPart(part) && part.text.length > 0,
+        )
+    const showLoadingIndicator = isStreaming && !lastAssistantHasText
+
+    const userStyle = `max-w-[85%] self-end rounded-sm bg-${theme}-message opacity-90 mt-6`
+    const assistantStyle = 'self-start mt-3'
+
+    const scrollRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({
+                behavior: 'smooth',
+            })
+        }
+    }, [messages, status])
+
+    return (
+        <div
+            className="flex-1 w-full overflow-y-auto flex flex-col py-2"
+            style={scrollMask}>
+            {messages.map((msg) => {
+                const textContent = msg.parts
+                    .filter(isTextUIPart)
+                    .map((part) => part.text)
+                    .join('')
+
+                if (!textContent) return null // prevent first empty msg from rendering
+
+                if (msg.role === 'user') {
+                    return (
+                        <div
+                            key={msg.id}
+                            className={`text-xs text-${theme}-font-primary px-2.5 py-1 ${userStyle}`}>
+                            <span>{textContent}</span>
+                        </div>
+                    )
+                }
+
+                return (
+                    <div key={msg.id} className={`px-2.5 ${assistantStyle}`}>
+                        <Markdown
+                            theme={theme}
+                            content={textContent}
+                            size={'xs'}
+                        />
+                    </div>
+                )
+            })}
+            <LoadingIndicator theme={theme} show={showLoadingIndicator} />
+            <div ref={scrollRef}></div>
+        </div>
+    )
+}
