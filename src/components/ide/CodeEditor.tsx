@@ -5,7 +5,7 @@ export default function CodeEditor({
     file,
     theme,
     onCursorChange,
-    onSelectionChange,
+    onHighlightChange,
     onContentChange,
 }: EditorProps) {
     const editorTheme = theme == 'light' ? 'vs' : 'vs-dark'
@@ -21,12 +21,15 @@ export default function CodeEditor({
             const model = editor.getModel()
 
             if (!model) return
-            const selection = !e.selection.isEmpty()
-                ? model.getValueInRange(e.selection)
-                : ''
+            const isEmpty = e.selection.isEmpty()
 
-            if (onSelectionChange) {
-                onSelectionChange(selection)
+            if (onHighlightChange) {
+                onHighlightChange({
+                    isActive: !isEmpty,
+                    content: isEmpty ? '' : model.getValueInRange(e.selection),
+                    start: isEmpty ? 0 : e.selection.startLineNumber,
+                    end: isEmpty ? 0 : e.selection.endLineNumber,
+                })
             }
         })
     }

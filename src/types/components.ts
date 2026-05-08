@@ -19,7 +19,12 @@ export interface EditorProps {
     theme: string
     file: File
     onCursorChange?: (line: number) => void
-    onSelectionChange?: (text: string) => void
+    onHighlightChange?: (data: {
+        isActive: boolean
+        content: string
+        start: number
+        end: number
+    }) => void
     onContentChange?: (content: string) => void
 }
 

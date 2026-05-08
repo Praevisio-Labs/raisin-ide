@@ -35,7 +35,8 @@
 - [x] track highlighted text in CodeEditor and lift to page state, #36
 - [x] inject active file content and cursor line into each chat request, #31
 - [x] track user edits in memory and synchronize AI context injection, #37
-- [ ] add filename and line indicator to AI panel showing active context, #32
+- [x] track selection bounds and conditionally inject highlighted text, #38
+- [ ] add filename and selection bounds indicator to AI panel, #32
 - [ ] tune response for contextual awareness of reference code in editor, #33
 - [ ] measure time to first token and reduce response latency, #35
 - [ ] complete backlogged UI enhancements and minor bug fixes, #34
