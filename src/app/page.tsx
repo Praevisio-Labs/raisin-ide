@@ -63,28 +63,6 @@ function Page() {
                 </div>
                 <div
                     className={`flex-4 h-full flex flex-col rounded-sm  overflow-hidden bg-${theme}-editor`}>
-                    {/* NTD: remove debug block */}
-                    <div className="text-xs text-white p-2">
-                        Temp Debug Block
-                        <p className="text-xs text-white p-2">
-                            <span className="text-blue-400">File: </span>
-                            {selectedFile.name}
-                        </p>
-                        <p className="text-xs text-white p-2">
-                            <span className="text-blue-400">Cursor: </span>
-                            {cursorLine}
-                        </p>
-                        <p className="text-xs text-white p-2">
-                            <span className="text-blue-400">Highlighted: </span>
-                            {highlightedText.content}
-                        </p>
-                        <p className="text-xs text-white p-2">
-                            <span className="text-blue-400">Lines: </span>
-                            {highlightedText.isActive &&
-                                `${highlightedText.start} - ${highlightedText.end}`}
-                        </p>
-                    </div>
-
                     <CodeEditor
                         file={selectedFile}
                         theme={theme}

@@ -38,3 +38,10 @@ export type Skill = {
 }
 
 export type Aside = 'note' | 'warning' | 'tip'
+
+export type TextSelection = {
+    isActive: boolean
+    content: string
+    start: number
+    end: number
+}

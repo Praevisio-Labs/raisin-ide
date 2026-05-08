@@ -1,4 +1,4 @@
-import { Link, File, Project, Skill, Aside } from './index'
+import { Link, File, Project, Skill, Aside, TextSelection } from './index'
 import { type UIMessage } from 'ai'
 
 export interface HeaderProps {
@@ -19,20 +19,21 @@ export interface EditorProps {
     theme: string
     file: File
     onCursorChange?: (line: number) => void
-    onHighlightChange?: (data: {
-        isActive: boolean
-        content: string
-        start: number
-        end: number
-    }) => void
+    onHighlightChange?: (data: TextSelection) => void
     onContentChange?: (content: string) => void
 }
 
-export interface AssistantProps {
+export interface AssistantPanelProps {
     theme: string
     file: File
     cursorLine: number
     fileContent: string
+}
+
+export interface AgentContextDisplayProps {
+    theme: string
+    file: File
+    textSelection: TextSelection
 }
 
 export interface ThemeProps {

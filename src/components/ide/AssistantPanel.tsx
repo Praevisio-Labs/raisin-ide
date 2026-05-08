@@ -5,7 +5,7 @@ import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport, type UIMessage, isTextUIPart } from 'ai'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 import { scrollMask } from '@/app/ui/styles'
-import { AssistantProps } from '@/types/components'
+import { AssistantPanelProps } from '@/types/components'
 
 import RaisinIcon from '@/components/RaisinIcon'
 import LoadingIndicator from '@/components/ide/LoadingIndicator'
@@ -16,7 +16,7 @@ export default function AssistantPanel({
     file,
     cursorLine,
     fileContent,
-}: AssistantProps) {
+}: AssistantPanelProps) {
     const [input, setInput] = useState('')
 
     const { messages, sendMessage, status } = useChat({
