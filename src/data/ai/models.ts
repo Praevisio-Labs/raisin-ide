@@ -17,6 +17,7 @@ export const MODELS = {
     },
     openai: {
         fast: 'gpt-5-nano-2025-08-07',
+        fast41: 'gpt-4.1-nano',
         nano: 'gpt-5.4-nano-2026-03-17',
         mini: 'gpt-5.4-mini-2026-03-17',
         frontier: 'gpt-5.5-2026-04-23',
