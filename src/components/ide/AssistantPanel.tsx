@@ -3,11 +3,11 @@
 import { useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
-import {Persona} from '@/types/index'
+import { Persona } from '@/types/index'
 
 import { AssistantPanelProps } from '@/types/components'
 import { defaultMessage } from '@/data/defaults'
-import {personas} from '@/data/ai/personas'
+import { personas } from '@/data/ai/personas'
 
 import RaisinIcon from '@/components/RaisinIcon'
 import ChatDisplay from '@/components/ide/ChatDisplay'
@@ -35,11 +35,11 @@ export default function AssistantPanel({
     return (
         <>
             <div
-                className={`flex items-center gap-4 bg-${theme}-page uppercase tracking-wider text-[10px] p-2`}>
+                className={`flex items-center gap-4 h-9 px-2 bg-${theme}-page uppercase tracking-wider text-[10px]`}>
                 <span className={`flex-1 text-${theme}-font-primary`}>
                     Assistant
                 </span>
-                <div className="flex-2">
+                <div className="w-1/2">
                     <PersonaSelect
                         theme={theme}
                         selectedPersona={selectedPersona}

@@ -18,7 +18,7 @@ export default function FileTree({
     return (
         <>
             <div
-                className={`bg-${theme}-page uppercase tracking-wider text-[10px] text-${theme}-font-primary p-2`}>
+                className={`flex items-center h-9 px-2 bg-${theme}-page uppercase tracking-wider text-[10px] text-${theme}-font-primary`}>
                 Explorer
             </div>
             <ul className="flex flex-col gap-1">
