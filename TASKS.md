@@ -37,6 +37,11 @@
 - [x] track user edits in memory and synchronize AI context injection, #37
 - [x] track selection bounds and conditionally inject highlighted text, #38
 - [x] add filename and selection bounds indicator to AI panel, #32
-- [ ] tune response for contextual awareness of reference code in editor, #33
+- [ ] add persona selection and tune response, refine format guidelines, #33
 - [ ] measure time to first token and reduce response latency, #35
-- [ ] complete backlogged UI enhancements and minor bug fixes, #34
+- [ ] redesign chat input with auto-expanding textarea, #39 (refs #34)
+- [ ] consolidate color palette and design system, #40 (refs #34)
+- [ ] polish learn dashboard styling and theme colors, #41 (refs #34)
+- [ ] standardize typography and responsive layout, #42 (refs #34)
+- [ ] add favicon, footer, and component polish, #43 (refs #34)
+- [ ] design system, chat input, and dashboard polish for AI Eng Singapore 2026, #34

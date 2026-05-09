@@ -10,7 +10,7 @@ import { defaultMessage } from '@/data/defaults'
 import RaisinIcon from '@/components/RaisinIcon'
 import ChatDisplay from '@/components/ide/ChatDisplay'
 import ChatInput from '@/components/ide/ChatInput'
-import AgentContextDisplay from '@/components/ide/AgentContextDisplay'
+import ContextSelect from '@/components/ide/ContextSelect'
 
 export default function AssistantPanel({
     theme,
@@ -54,7 +54,7 @@ export default function AssistantPanel({
                     status={status}
                     sendMessage={sendMessage}
                 />
-                <AgentContextDisplay
+                <ContextSelect
                     theme={theme}
                     file={file}
                     textSelection={textSelection}

@@ -51,12 +51,18 @@ export interface ChatInputProps {
     sendMessage: (message: { text: string }, options: { body: any }) => void
 }
 
-export interface AgentContextDisplayProps {
+export interface ContextSelectProps {
     theme: string
     file: File
     textSelection: TextSelection
     isContextHidden: boolean
     setIsContextHidden: (value: boolean) => void
+}
+
+export interface PersonaSelectProps {
+    theme: string
+    selectedPersona: string
+    setSelectedPersona: (value: string) => void
 }
 
 export interface ThemeProps {

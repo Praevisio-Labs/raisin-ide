@@ -2,15 +2,15 @@ import {
     DocumentMagnifyingGlassIcon,
     EyeSlashIcon,
 } from '@heroicons/react/20/solid'
-import { AgentContextDisplayProps } from '@/types/components'
+import { ContextSelectProps } from '@/types/components'
 
-export default function AgentContextDisplay({
+export default function ContextSelect({
     theme,
     file,
     textSelection,
     isContextHidden,
     setIsContextHidden,
-}: AgentContextDisplayProps) {
+}: ContextSelectProps) {
     // const [isContextHidden, setIsContextHidden] = useState(false)
     const linesHighlightedCount = textSelection.end - textSelection.start + 1
 
