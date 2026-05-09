@@ -3,6 +3,12 @@ export const outputFormat = {
     
 Format your response using Markdown when it improves readability.
 
+Use inline code for short identifiers, filenames, commands, package names, and brief expressions.
+
+When showing code that is meant to be read as a snippet or copied into a file, use a fenced code block with an appropriate language tag.
+
+Do not place complete code snippets inline.
+
     `.trim(),
 }
 

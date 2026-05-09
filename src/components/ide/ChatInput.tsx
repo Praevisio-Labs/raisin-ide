@@ -19,7 +19,7 @@ export default function ChatInput({
                 e.preventDefault()
                 if (input.trim()) {
                     const body = isContextHidden
-                        ? {}
+                        ? { selectedPersona }
                         : {
                               fileName: file.name,
                               fileContent,

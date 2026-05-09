@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import {
     Listbox,
     ListboxButton,
@@ -21,9 +20,7 @@ export default function PersonaSelect({
     setSelectedPersona,
 }: PersonaSelectProps) {
     const handleChange = (person: Persona) => {
-        if (setSelectedPersona) {
-            setSelectedPersona(person)
-        }
+        setSelectedPersona(person)
     }
 
     return (

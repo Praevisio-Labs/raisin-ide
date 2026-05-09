@@ -27,18 +27,17 @@ export async function getStreamingResponse({
     const selectedModel = selectModel(provider)
     const convertedMessages = await convertToModelMessages(messages)
 
+    const fileContext = fileName
+        ? `The user is currently viewing: ${fileName} (cursor at line ${cursorLine ?? 1})\n\nFile contents:\n\`\`\`\n${fileContent}\n\`\`\``
+        : ''
+
     const systemPrompt = `
     
-You are a coding assistant helping a learner understand their code.
+You are a coding assistant helping an intermediate learner improve their skills.
 
 ${systemPersona[selectedPersona.key] ?? systemPersona.socrates}
 
-The user is currently viewing: ${fileName ?? 'unknown file'} (cursor at line ${cursorLine ?? 1})
-
-File contents:
-\`\`\`
-${fileContent ?? ''}
-\`\`\`
+${fileContext}
 
 ${systemGuardrail.raisin}
 
