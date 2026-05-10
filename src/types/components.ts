@@ -55,15 +55,19 @@ export interface ChatDisplayProps {
 
 export interface ChatInputProps {
     theme: string
-    file: File
-    cursorLine: number
-    fileContent: string
-    isContextHidden: boolean
+    status: string
     input: string
     setInput: (value: string) => void
-    status: string
     sendMessage: (message: { text: string }, options: { body: any }) => void
+    file: File
+    fileContent: string
+    cursorLine: number
+    textSelection: TextSelection
+    isContextHidden: boolean
+    setIsContextHidden: (value: boolean) => void
     selectedPersona: Persona
+    selectedModel: Model
+    setSelectedModel: (value: Model) => void
 }
 
 export interface ContextSelectProps {

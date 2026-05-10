@@ -17,10 +17,9 @@ import { CheckIcon } from '@heroicons/react/20/solid'
 
 export default function ModelSelect({
     theme,
-    // selectedModel,
-    // setSelectedModel,
+    selectedModel,
+    setSelectedModel,
 }: ModelSelectProps) {
-    const [selectedModel, setSelectedModel] = useState(models[0])
     const handleChange = (model: Model) => {
         setSelectedModel(model)
     }

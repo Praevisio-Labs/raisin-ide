@@ -1,17 +1,24 @@
 import { ChatInputProps } from '@/types/components'
 import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
 
+import ContextSelect from '@/components/ide/ContextSelect'
+import ModelSelect from '@/components/ide/ModelSelect'
+
 export default function ChatInput({
     theme,
-    file,
-    cursorLine,
-    fileContent,
-    isContextHidden,
+    status,
     input,
     setInput,
-    status,
     sendMessage,
+    file,
+    fileContent,
+    cursorLine,
+    textSelection,
+    isContextHidden,
+    setIsContextHidden,
     selectedPersona,
+    selectedModel,
+    setSelectedModel,
 }: ChatInputProps) {
     return (
         <form
@@ -44,6 +51,18 @@ export default function ChatInput({
                 className={`bg-${theme}-accent-primary px-1`}>
                 <ArrowUpCircleIcon className="h-5 w-5" />
             </button>
+            <ContextSelect
+                theme={theme}
+                file={file}
+                textSelection={textSelection}
+                isContextHidden={isContextHidden}
+                setIsContextHidden={setIsContextHidden}
+            />
+            <ModelSelect
+                theme={theme}
+                selectedModel={selectedModel}
+                setSelectedModel={setSelectedModel}
+            />
         </form>
     )
 }

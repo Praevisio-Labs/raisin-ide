@@ -3,16 +3,17 @@
 import { useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
-import { Persona } from '@/types/index'
 
+import { Persona, Model } from '@/types/index'
 import { AssistantPanelProps } from '@/types/components'
+
 import { defaultMessage } from '@/data/defaults'
 import { personas } from '@/data/ai/personas'
+import { DEMO_MODELS as models } from '@/data/ai/models'
 
 import RaisinIcon from '@/components/RaisinIcon'
 import ChatDisplay from '@/components/ide/ChatDisplay'
 import ChatInput from '@/components/ide/ChatInput'
-import ContextSelect from '@/components/ide/ContextSelect'
 import PersonaSelect from '@/components/ide/PersonaSelect'
 import PersonaDisplay from '@/components/ide/PersonaDisplay'
 
@@ -27,6 +28,7 @@ export default function AssistantPanel({
 }: AssistantPanelProps) {
     const [input, setInput] = useState('')
     const [selectedPersona, setSelectedPersona] = useState<Persona>(personas[0])
+    const [selectedModel, setSelectedModel] = useState<Model>(models[0])
 
     const { messages, sendMessage, status } = useChat({
         messages: defaultMessage,
@@ -62,23 +64,24 @@ export default function AssistantPanel({
                     status={status}
                 />
                 <ChatInput
+                    // rendering
                     theme={theme}
-                    file={file}
-                    cursorLine={cursorLine}
-                    fileContent={fileContent}
-                    isContextHidden={isContextHidden}
+                    status={status}
+                    // user query
                     input={input}
                     setInput={setInput}
-                    status={status}
                     sendMessage={sendMessage}
-                    selectedPersona={selectedPersona}
-                />
-                <ContextSelect
-                    theme={theme}
+                    // dynamic context
                     file={file}
+                    fileContent={fileContent}
+                    cursorLine={cursorLine}
                     textSelection={textSelection}
                     isContextHidden={isContextHidden}
                     setIsContextHidden={setIsContextHidden}
+                    // interactive elements
+                    selectedPersona={selectedPersona}
+                    selectedModel={selectedModel}
+                    setSelectedModel={setSelectedModel}
                 />
             </div>
         </>
