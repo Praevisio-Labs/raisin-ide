@@ -7,6 +7,7 @@ import {
     Aside,
     TextSelection,
     Persona,
+    Model,
 } from './index'
 
 export interface HeaderProps {
@@ -77,6 +78,12 @@ export interface PersonaSelectProps {
     theme: string
     selectedPersona: Persona
     setSelectedPersona: (value: Persona) => void
+}
+
+export interface ModelSelectProps {
+    theme: string
+    selectedModel: Model
+    setSelectedModel: (value: Model) => void
 }
 
 export interface ThemeProps {

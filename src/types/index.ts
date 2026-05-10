@@ -56,3 +56,13 @@ export interface Persona {
         long: string
     }
 }
+
+export interface Model {
+    name: string
+    modelId: string
+    description: {
+        short: string
+        medium: string
+        long: string
+    }
+}

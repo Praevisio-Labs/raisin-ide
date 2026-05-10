@@ -40,7 +40,7 @@
 - [x] add persona selection and tune response, refine format guidelines, #33
 - [x] measure time to first token and reduce response latency, #35
 - [x] add persona display component rendering longer role description, #44
-- [ ] redesign chat input with auto-expanding textarea, #39 (refs #34)
+- [ ] add model select and redesign chat input component, #39 (refs #34)
 - [ ] consolidate color palette and design system, #40 (refs #34)
 - [ ] polish learn dashboard styling and theme colors, #41 (refs #34)
 - [ ] standardize typography and responsive layout, #42 (refs #34)
