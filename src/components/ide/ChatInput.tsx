@@ -20,28 +20,36 @@ export default function ChatInput({
     selectedModel,
     setSelectedModel,
 }: ChatInputProps) {
+    function handleSubmit() {
+        if (input.trim()) {
+            const body = isContextHidden
+                ? { selectedPersona }
+                : {
+                      fileName: file.name,
+                      fileContent,
+                      cursorLine,
+                      selectedPersona,
+                  }
+            sendMessage({ text: input }, { body })
+            setInput('')
+        }
+    }
+
+    function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSubmit()
+        }
+    }
+
     return (
         <form
-            onSubmit={(e) => {
-                e.preventDefault()
-                if (input.trim()) {
-                    const body = isContextHidden
-                        ? { selectedPersona }
-                        : {
-                              fileName: file.name,
-                              fileContent,
-                              cursorLine,
-                              selectedPersona,
-                          }
-                    sendMessage({ text: input }, { body })
-                    setInput('')
-                }
-            }}
+            onSubmit={handleSubmit}
             className={`flex-none w-[88%] flex rounded-sm overflow-hidden bg-${theme}-input my-4`}>
-            <input
-                type="text"
+            <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Ask a question, I'm here to help..."
                 className={`flex-1 text-xs text-${theme}-font-primary px-2 py-1`}
             />
