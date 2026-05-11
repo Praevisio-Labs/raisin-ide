@@ -1,110 +1,75 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { ArrowUpCircleIcon } from '@heroicons/react/24/outline'
-import { scrollMask } from '@/app/ui/styles'
-import { AssistantProps } from '@/types/components'
+import { useState } from 'react'
+import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
+
+import { Persona, Model } from '@/types/index'
+import { AssistantPanelProps } from '@/types/components'
+
+import { defaultMessage } from '@/data/defaults'
+import { personas } from '@/data/ai/personas'
+import { DEMO_MODELS as models } from '@/data/ai/models'
 
 import RaisinIcon from '@/components/RaisinIcon'
-import TypingIndicator from '@/components/ide/TypingIndicator'
+import ChatDisplay from '@/components/ide/ChatDisplay'
+import ChatInput from '@/components/ide/ChatInput'
+import PersonaSelect from '@/components/ide/PersonaSelect'
+import PersonaDisplay from '@/components/ide/PersonaDisplay'
 
-export default function AssistantPanel({ theme }: AssistantProps) {
-    const [isLoading, setIsLoading] = useState(false)
-    const [query, setQuery] = useState('')
-    const [messages, setMessages] = useState([
-        { role: 'assistant', content: 'Hi! What are we building today?' },
-    ])
+export default function AssistantPanel({
+    file,
+    cursorLine,
+    fileContent,
+    textSelection,
+    isContextHidden,
+    setIsContextHidden,
+}: AssistantPanelProps) {
+    const [input, setInput] = useState('')
+    const [selectedPersona, setSelectedPersona] = useState<Persona>(personas[0])
+    const [selectedModel, setSelectedModel] = useState<Model>(models[0])
 
-    const scrollRef = useRef<HTMLDivElement>(null)
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollIntoView({
-                behavior: 'smooth',
-            })
-        }
-    }, [messages, isLoading])
-
-    const userStyle = `max-w-[85%] self-end rounded-sm bg-${theme}-message opacity-90 mt-6`
-    const assistantStyle = 'self-start mt-3'
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setQuery(e.target.value)
-    }
-
-    function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-        e.preventDefault()
-
-        if (!query) return
-        setIsLoading(true)
-
-        const userQuery = {
-            role: 'user',
-            content: query.trim(),
-        }
-        setMessages((prev) => [
-            ...prev,
-            userQuery, //
-        ])
-
-        setQuery('')
-        appendMockResponse()
-    }
-
-    function appendMockResponse() {
-        setTimeout(() => {
-            const assistantResponse = {
-                role: 'assistant',
-                content:
-                    'Great question. But the endpoint is not live. Check back soon!',
-            }
-            setMessages((prev) => [
-                ...prev,
-                assistantResponse, //
-            ])
-            setIsLoading(false)
-        }, 2800)
-    }
+    const { messages, sendMessage, status } = useChat({
+        messages: defaultMessage,
+        transport: new DefaultChatTransport({ api: '/api/chat' }),
+    })
 
     return (
         <>
             <div
-                className={`bg-${theme}-page uppercase tracking-wider text-[10px] text-${theme}-font-primary p-2`}>
-                Assistant
+                className={`flex items-center gap-4 h-9 px-2 bg-header uppercase tracking-wider text-[10px]`}>
+                <span className={`flex-1 text-font-apex`}>Assistant</span>
+                <div className="w-1/2">
+                    <PersonaSelect
+                        selectedPersona={selectedPersona}
+                        setSelectedPersona={setSelectedPersona}
+                    />
+                </div>
             </div>
             <div className="flex-1 items-center flex flex-col overflow-hidden p-2">
                 <RaisinIcon
-                    className={`flex-none h-8 w-8 text-${theme}-font-primary m-4`}
+                    className={`flex-none h-8 w-8 text-font-apex m-4`}
                 />
-                <div
-                    className="flex-1 w-full overflow-y-auto flex flex-col py-2"
-                    style={scrollMask}>
-                    {messages.map((msg, index) => (
-                        <div
-                            key={index}
-                            className={`
-                            text-xs text-${theme}-font-primary px-2.5 py-1
-                            ${msg.role === 'user' ? userStyle : assistantStyle}
-                            `}>
-                            {msg.content}
-                        </div>
-                    ))}
-                    {isLoading && <TypingIndicator theme={theme} />}
-                    <div ref={scrollRef}></div>
-                </div>
-                <form
-                    onSubmit={handleSubmit}
-                    className={`flex-none w-[88%] flex rounded-sm overflow-hidden bg-${theme}-input my-4`}>
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={handleChange}
-                        placeholder="Ask a question, I'm here to help..."
-                        className={`flex-1 text-xs text-${theme}-font-primary px-2 py-1`}
-                    />
-                    <button className={`bg-${theme}-accent-primary px-1`}>
-                        <ArrowUpCircleIcon className="h-5 w-5" />
-                    </button>
-                </form>
+                <PersonaDisplay selectedPersona={selectedPersona} />
+                <ChatDisplay messages={messages} status={status} />
+                <ChatInput
+                    status={status}
+                    // user query
+                    input={input}
+                    setInput={setInput}
+                    sendMessage={sendMessage}
+                    // dynamic context
+                    file={file}
+                    fileContent={fileContent}
+                    cursorLine={cursorLine}
+                    textSelection={textSelection}
+                    isContextHidden={isContextHidden}
+                    setIsContextHidden={setIsContextHidden}
+                    // interactive elements
+                    selectedPersona={selectedPersona}
+                    selectedModel={selectedModel}
+                    setSelectedModel={setSelectedModel}
+                />
             </div>
         </>
     )

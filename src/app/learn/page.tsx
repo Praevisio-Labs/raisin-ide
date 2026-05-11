@@ -1,14 +1,18 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Dashboard from '@/components/learn/Dashboard'
 import Project from '@/components/learn/Project'
-import { projectData } from '@/data/project-modules'
+import { projectData } from '@/data/learn/project-modules'
 
 function Page() {
     const [theme, setTheme] = useState('raisin')
     const searchParams = useSearchParams()
+
+    useEffect(() => {
+        document.documentElement.dataset.theme = theme
+    }, [theme])
     const router = useRouter()
     const moduleID = searchParams.get('module')
     const project = moduleID

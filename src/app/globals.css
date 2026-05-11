@@ -1,58 +1,79 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-raisin-page: #240046;
-  --color-raisin-editor: #5A189A;
-  --color-raisin-panel: #3C096C;
-  --color-raisin-input: #560D9B;
-  --color-raisin-gap: #7B2CBF;
-  --color-raisin-font-primary: #FF9E00;
-  --color-raisin-font-secondary: #FF8300;
-  --color-raisin-font-tertiary: #FF6200;
-  --color-raisin-accent-primary: #FF6D00;
-  --color-raisin-accent-secondary: #CC5700;
-  --color-raisin-accent-tertiary: #FF9A4E;
-  --color-raisin-card: #5A189A;
-  --color-raisin-message: #7011CA;
-  
-  --color-dark-page: #030712;
-  --color-dark-editor: #0D1116;
-  --color-dark-panel: #020408;
-  --color-dark-input: #112345;
-  --color-dark-gap: #161B22;
-  --color-dark-font-primary: #EDEDED;
-  --color-dark-font-secondary: #A1A1A1;
-  --color-dark-font-tertiary: #A684FF;
-  --color-dark-accent-primary: #0065D7;
-  --color-dark-accent-secondary: #0059BE;
-  --color-dark-accent-tertiary: #7D8597;
-  --color-dark-card: #0D1116;
-  --color-dark-message: #0C1831;
-  
-  --color-light-page: #252422;
-  --color-light-editor: #CCC5B9;
-  --color-light-panel: #FFFCF2;
-  --color-light-input: #FFFFFE;
-  --color-light-gap: #F5F5F5;
-  --color-light-font-primary: #EB5E28;
-  --color-light-font-secondary: #403D39;
-  --color-light-font-tertiary: #252422;
-  --color-light-accent-primary: #EB5E28;
-  --color-light-accent-secondary: #252422;
-  --color-light-accent-tertiary: #CD4713;
-  --color-light-card: #F4F1DE;
-  --color-light-message: #FFF0C0;
+    --color-header:         #10002B;
+    --color-page:           #3C096C;
+    --color-panel:          #240046;
+    --color-editor:         #240046;
+    --color-input:          #570D9B;
+    --color-message:        #570D9B;
+    --color-button:         #FF6D00;
+    --color-ring:           #B67211;
+    --color-card:           #570D9B;
+    --color-highlight:      #A049F0;
+    --color-font-apex:      #FF9F00;
+    --color-font-primary:   #FF9F00;
+    --color-font-secondary: #FFC900;
+    --color-font-tertiary:  #5BC0BE;
+    --color-font-paragraph: #DABFFF;
+    --color-font-neutral:   #F1DEDE;
+    --color-accent-apex:    #FF6D00;
+    --color-accent-bright:  #B100E8;
+    --color-accent-muted:   #8415EC;
+    --color-accent-dark:    #6F2DBD;
+    --color-accent-contra:  #3C096C;
 }
 
-/* raisin */
-@source inline("bg-raisin-page bg-raisin-editor bg-raisin-panel bg-raisin-input bg-raisin-gap bg-raisin-card bg-raisin-font-primary bg-raisin-accent-primary bg-raisin-message text-raisin-font-primary text-raisin-font-secondary text-raisin-font-tertiary text-raisin-card text-raisin-page border-raisin-accent-primary border-raisin-accent-secondary border-raisin-gap hover:bg-raisin-accent-primary hover:text-raisin-page");
-@source inline("prose-p:text-raisin-font-secondary prose-headings:text-raisin-font-tertiary prose-strong:text-raisin-font-primary prose-code:text-raisin-accent-primary prose-li:text-raisin-font-secondary prose-a:text-raisin-accent-primary");
+@layer base {
+    [data-theme='dark'] {
+        --color-header:         #030712;
+        --color-page:           #161B22;
+        --color-panel:          #0B1831;
+        --color-editor:         #0B1831;
+        --color-input:          #112345;
+        --color-message:        #112345;
+        --color-button:         #0065D7;
+        --color-ring:           #0B7FFF;
+        --color-card:           #0D1116;
+        --color-highlight:      #98C1D9;
+        --color-font-apex:      #C2C2C2;
+        --color-font-primary:   #A684FF;
+        --color-font-secondary: #0066D7;
+        --color-font-tertiary:  #00A896;
+        --color-font-paragraph: #CBEEF3;
+        --color-font-neutral:   #EDEDED;
+        --color-accent-apex:    #C2C2C2;
+        --color-accent-bright:  #0B7FFF;
+        --color-accent-muted:   #004EA4;
+        --color-accent-dark:    #2A55A6;
+        --color-accent-contra:  #161B22;
+    }
 
-/* dark */
-@source inline("bg-dark-page bg-dark-editor bg-dark-panel bg-dark-input bg-dark-gap bg-dark-card bg-dark-font-primary bg-dark-accent-primary bg-dark-message text-dark-font-primary text-dark-font-secondary text-dark-font-tertiary text-dark-card text-dark-page border-dark-accent-primary border-dark-accent-secondary border-dark-gap hover:bg-dark-accent-primary hover:text-dark-page");
-@source inline("prose-p:text-dark-font-secondary prose-headings:text-dark-font-tertiary prose-strong:text-dark-font-primary prose-code:text-dark-accent-primary prose-li:text-dark-font-secondary prose-a:text-dark-accent-primary");
+    [data-theme='light'] {
+        --color-header:         #252422;
+        --color-page:           #8A817C;
+        --color-panel:          #FFFCF2;
+        --color-editor:         #FFFCF2;
+        --color-input:          #FFF7DE;
+        --color-message:        #FFF7DE;
+        --color-button:         #CA4713;
+        --color-ring:           #877962;
+        --color-card:           #EAE0D5;
+        --color-highlight:      #463F3A;
+        --color-font-apex:      #EB5E28;
+        --color-font-primary:   #403D39;
+        --color-font-secondary: #6A655E;
+        --color-font-tertiary:  #53514C;
+        --color-font-paragraph: #252422;
+        --color-font-neutral:   #6A655E;
+        --color-accent-apex:    #EB5E28;
+        --color-accent-bright:  #463F3A;
+        --color-accent-muted:   #8A817C;
+        --color-accent-dark:    #BCB8B1;
+        --color-accent-contra:  #403D39;
+    }
+}
 
-/* light */
-@source inline("bg-light-page bg-light-editor bg-light-panel bg-light-input bg-light-gap bg-light-card bg-light-font-primary bg-light-accent-primary bg-light-message text-light-font-primary text-light-font-secondary text-light-font-tertiary text-light-card text-light-page border-light-accent-primary border-light-accent-secondary border-light-gap hover:bg-light-accent-primary hover:text-light-page");
-@source inline("prose-p:text-light-font-secondary prose-headings:text-light-font-tertiary prose-strong:text-light-font-primary prose-code:text-light-accent-primary prose-li:text-light-font-secondary prose-a:text-light-accent-primary");
+/* tailwind typography */
+@source inline("text-xs text-sm text-base text-lg text-xl text-2xl");

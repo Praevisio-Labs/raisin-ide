@@ -1,5 +1,5 @@
 import { DashboardProps } from '@/types/components'
-import { projectData } from '@/data/project-modules'
+import { projectData } from '@/data/learn/project-modules'
 
 import Header from '@/components/Header'
 import ModuleCard from '@/components/learn/ModuleCard'
@@ -11,7 +11,7 @@ export default function Dashboard({
 }: DashboardProps) {
     return (
         <main
-            className={`flex flex-col w-full h-screen bg-${theme}-gap overflow-hidden`}>
+            className={`flex flex-col w-full h-screen bg-panel overflow-hidden`}>
             <Header
                 theme={theme}
                 setTheme={setTheme}
@@ -20,20 +20,20 @@ export default function Dashboard({
             />
             <div className="flex-none p-6 overflow-auto">
                 <h2
-                    className={`text-${theme}-font-tertiary text-4xl font-semibold mb-4`}>
+                    className={`text-font-tertiary text-4xl font-semibold mb-4`}>
                     Project Modules
                 </h2>
             </div>
-            <div className="flex-1 flex justify-center items-center gap-5">
-                {projectData.map((project, index) => (
-                    <ModuleCard
-                        key={index}
-                        theme={theme}
-                        name={project.name}
-                        description={project.description}
-                        onClick={() => onClick(project.id)}
-                    />
-                ))}
+            <div className="flex-1 overflow-y-auto px-6 pb-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {projectData.map((project) => (
+                        <ModuleCard
+                            key={project.id}
+                            project={project}
+                            onClick={() => onClick(project.id)}
+                        />
+                    ))}
+                </div>
             </div>
         </main>
     )

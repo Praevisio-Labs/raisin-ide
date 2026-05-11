@@ -1,4 +1,14 @@
-import { Link, File, Project, Skill, Aside } from './index'
+import { type UIMessage } from 'ai'
+import {
+    Link,
+    File,
+    Project,
+    Skill,
+    Aside,
+    TextSelection,
+    Persona,
+    Model,
+} from './index'
 
 export interface HeaderProps {
     theme: string
@@ -11,16 +21,65 @@ export interface FileTreeProps {
     files: File[]
     selected: File
     onSelect: (file: File) => void
-    theme: string
 }
 
 export interface EditorProps {
-    file: File
     theme: string
+    file: File
+    onCursorChange?: (line: number) => void
+    onHighlightChange?: (data: TextSelection) => void
+    onContentChange?: (content: string) => void
 }
 
-export interface AssistantProps {
-    theme: string
+export interface AssistantPanelProps {
+    file: File
+    cursorLine: number
+    fileContent: string
+    textSelection: TextSelection
+    isContextHidden: boolean
+    setIsContextHidden: (value: boolean) => void
+}
+
+export interface PersonaDisplayProps {
+    selectedPersona: Persona
+}
+
+export interface ChatDisplayProps {
+    messages: UIMessage[]
+    status: string
+}
+
+export interface ChatInputProps {
+    status: string
+    input: string
+    setInput: (value: string) => void
+    sendMessage: (message: { text: string }, options: { body: any }) => void
+    file: File
+    fileContent: string
+    cursorLine: number
+    textSelection: TextSelection
+    isContextHidden: boolean
+    setIsContextHidden: (value: boolean) => void
+    selectedPersona: Persona
+    selectedModel: Model
+    setSelectedModel: (value: Model) => void
+}
+
+export interface ContextSelectProps {
+    file: File
+    textSelection: TextSelection
+    isContextHidden: boolean
+    setIsContextHidden: (value: boolean) => void
+}
+
+export interface PersonaSelectProps {
+    selectedPersona: Persona
+    setSelectedPersona: (value: Persona) => void
+}
+
+export interface ModelSelectProps {
+    selectedModel: Model
+    setSelectedModel: (value: Model) => void
 }
 
 export interface ThemeProps {
@@ -37,17 +96,12 @@ export interface FileIconProps {
     fileType: string
 }
 
-export interface TypingIndicatorProps {
-    theme: string
+export interface LoadingIndicatorProps {
+    show: boolean
 }
 
 export interface ModuleProps {
-    theme: string
-    id?: string
-    name?: string
-    description?: string
-    skills?: string[]
-    files?: File[]
+    project: Project
     onClick: () => void
 }
 
@@ -65,14 +119,13 @@ export interface ProjectProps {
 }
 
 export interface SkillProps {
-    theme: string
     name?: string
     content: string
 }
 
 export interface MarkdownProps {
-    theme: string
     content: string
+    size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl'
 }
 
 export interface AsideProps {
@@ -83,4 +136,12 @@ export interface AsideProps {
 
 export interface ScrollTopProps {
     targetId: string
+}
+
+export interface StreamingResponseProps {
+    messages: UIMessage[]
+    fileName?: string
+    fileContent?: string
+    cursorLine?: number
+    selectedPersona: Persona
 }

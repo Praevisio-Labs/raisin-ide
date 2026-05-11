@@ -6,6 +6,12 @@ import './globals.css'
 export const metadata: Metadata = {
     title: 'Raisin.IDE',
     description: 'Rethinking Coding Education for the AI Era',
+    icons: {
+        icon: [
+            { url: '/favicon.svg', type: 'image/svg+xml' },
+            { url: '/favicon-64x64.png', sizes: '64x64', type: 'image/png' },
+        ],
+    },
 }
 
 export default function RootLayout({

@@ -1,0 +1,53 @@
+{
+  "raisin": {
+    "header": "#240046",
+    "editor": "#5A189A",
+    "panel": "#3C096C",
+    "input": "#560D9B",
+    "page": "#7B2CBF",
+    "font-apex": "#FF9E00",
+    "font-primary": "#FF9E00",
+    "font-secondary": "#FF8300",
+    "font-tertiary": "#FF6200",
+    "accent-apex": "#FF6D00",
+    "accent-bright": "#FF6D00",
+    "accent-neutral": "#CC5700",
+    "accent-dark": "#FF9A4E",
+    "card-parent": "#5A189A",
+    "card-child": "#7011CA"
+  },
+  "dark": {
+    "header": "#030712",
+    "editor": "#0D1116",
+    "panel": "#020408",
+    "input": "#112345",
+    "page": "#161B22",
+    "font-apex": "#EDEDED",
+    "font-primary": "#EDEDED",
+    "font-secondary": "#A1A1A1",
+    "font-tertiary": "#A684FF",
+    "accent-apex": "#0065D7",
+    "accent-bright": "#0065D7",
+    "accent-neutral": "#0059BE",
+    "accent-dark": "#7D8597",
+    "card-parent": "#0D1116",
+    "card-child": "#0C1831"
+  },
+  "light": {
+    "header": "#252422",
+    "editor": "#CCC5B9",
+    "panel": "#FFFCF2",
+    "input": "#FFFFFE",
+    "page": "#F5F5F5",
+    "font-apex": "#EB5E28",
+    "font-primary": "#EB5E28",
+    "font-secondary": "#403D39",
+    "font-tertiary": "#252422",
+    "accent-apex": "#EB5E28",
+    "accent-bright": "#EB5E28",
+    "accent-neutral": "#252422",
+    "accent-dark": "#CD4713",
+    "card-parent": "#F4F1DE",
+    "card-child": "#FFF0C0"
+  }
+}

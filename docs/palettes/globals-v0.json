@@ -1,0 +1,47 @@
+{
+  "raisin": {
+    "page": "#240046",
+    "editor": "#5A189A",
+    "panel": "#3C096C",
+    "input": "#560D9B",
+    "gap": "#7B2CBF",
+    "card": "#5A189A",
+    "message": "#7011CA",
+    "font-primary": "#FF9E00",
+    "font-secondary": "#FF8300",
+    "font-tertiary": "#FF6200",
+    "accent-primary": "#FF6D00",
+    "accent-secondary": "#CC5700",
+    "accent-tertiary": "#FF9A4E"
+  },
+  "dark": {
+    "page": "#030712",
+    "editor": "#0D1116",
+    "panel": "#020408",
+    "input": "#112345",
+    "gap": "#161B22",
+    "card": "#0D1116",
+    "message": "#0C1831",
+    "font-primary": "#EDEDED",
+    "font-secondary": "#A1A1A1",
+    "font-tertiary": "#A684FF",
+    "accent-primary": "#0065D7",
+    "accent-secondary": "#0059BE",
+    "accent-tertiary": "#7D8597"
+  },
+  "light": {
+    "page": "#252422",
+    "editor": "#CCC5B9",
+    "panel": "#FFFCF2",
+    "input": "#FFFFFE",
+    "gap": "#F5F5F5",
+    "card": "#F4F1DE",
+    "message": "#FFF0C0",
+    "font-primary": "#EB5E28",
+    "font-secondary": "#403D39",
+    "font-tertiary": "#252422",
+    "accent-primary": "#EB5E28",
+    "accent-secondary": "#252422",
+    "accent-tertiary": "#CD4713"
+  }
+}

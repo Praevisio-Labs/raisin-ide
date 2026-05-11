@@ -28,6 +28,11 @@ export type Project = {
     instructions: string
     outcomes: string
     skills: string[]
+    domains: Domain[]
+    level: Level
+    duration: string
+    teachers: string[]
+    comingSoon?: boolean
     files: File[]
 }
 
@@ -38,3 +43,56 @@ export type Skill = {
 }
 
 export type Aside = 'note' | 'warning' | 'tip'
+
+export type TextSelection = {
+    isActive: boolean
+    content: string
+    start: number
+    end: number
+}
+
+export interface Persona {
+    id: number
+    key: 'socrates' | 'plato' | 'aristotle' | 'epictetus' | 'pliny'
+    name: string
+    avatar: string
+    description: {
+        short: string
+        long: string
+    }
+}
+
+export interface Model {
+    name: string
+    modelId: string
+    description: {
+        short: string
+        medium: string
+        long: string
+    }
+}
+
+export interface Teacher {
+    id: string
+    name: string
+    avatar: string
+    description: {
+        short: string
+        long: string
+    }
+}
+export type Domain =
+    | 'frontend'
+    | 'backend'
+    | 'full-stack'
+    | 'devops'
+    | 'data'
+    | 'ai'
+    | 'agents'
+    | 'rag'
+    | 'tool-calling'
+    | 'security'
+    | 'testing'
+    | 'mobile'
+
+export type Level = 'Beginner' | 'Intermediate' | 'Advanced'

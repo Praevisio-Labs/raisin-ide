@@ -2275,66 +2275,96 @@ for await (const chunk of result.textStream) {
 
 ### Building a chat UI with \`useChat\`
 
-In AI SDK 6, \`useChat\` connects to a **Server Action** instead of an API route. This gives you end-to-end type safety with no URL to configure.
+In AI SDK 6, \`useChat\` is transport-based. The current idiom is:
 
-**Server Action:**
+- configure the endpoint with \`DefaultChatTransport\`
+- keep static request settings at the transport level
+- pass dynamic request data, like file context and cursor position, when you call \`sendMessage\`
 
-\`\`\`ts
-// app/actions/chat.ts
-'use server'
-
-import { streamText } from 'ai'
-import { openai } from '@ai-sdk/openai'
-
-export async function chat(messages: { role: string; content: string }[]) {
-    const result = streamText({
-        model: openai('gpt-4o'),
-        system: 'You are a helpful assistant.',
-        messages,
-    })
-
-    return result.toDataStream()
-}
-\`\`\`
-
-**Client Component:**
+**Client component:**
 
 \`\`\`tsx
 'use client'
 
-import { useChat } from 'ai/react'
-import { chat } from '@/app/actions/chat'
+import { useState } from 'react'
+import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
 
-export default function ChatUI() {
-    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-        api: chat,  // pass the Server Action directly — no URL needed
+export default function ChatUI({ file, cursorLine }: {
+    file: { name: string; content: string }
+    cursorLine: number
+}) {
+    const [input, setInput] = useState('')
+
+    const { messages, sendMessage, status } = useChat({
+        transport: new DefaultChatTransport({ api: '/api/chat' }),
     })
 
     return (
-        <div>
+        <form
+            onSubmit={(event) => {
+                event.preventDefault()
+
+                if (!input.trim()) return
+
+                sendMessage(
+                    { text: input },
+                    {
+                        body: {
+                            fileName: file.name,
+                            fileContent: file.content,
+                            cursorLine,
+                        },
+                    },
+                )
+
+                setInput('')
+            }}
+        >
             <ul>
-                {messages.map((m) => (
-                    <li key={m.id}>
-                        <strong>{m.role}:</strong> {m.content}
+                {messages.map((message) => (
+                    <li key={message.id}>
+                        <strong>{message.role}:</strong> {message.parts
+                            .filter((part) => part.type === 'text')
+                            .map((part) => part.text)
+                            .join('')}
                     </li>
                 ))}
             </ul>
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    value={input}
-                    onChange={handleInputChange}
-                    placeholder="Ask something..."
-                    disabled={isLoading}
-                />
-                <button type="submit" disabled={isLoading}>Send</button>
-            </form>
-        </div>
+            <input
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                placeholder="Ask something..."
+                disabled={status !== 'ready'}
+            />
+            <button type="submit" disabled={status !== 'ready'}>
+                Send
+            </button>
+        </form>
     )
 }
 \`\`\`
 
-\`useChat\` manages the message array, input state, loading state, and streaming updates automatically.
+**Route handler:**
+
+\`\`\`ts
+// app/api/chat/route.ts
+import { getStreamingResponse } from '@/app/lib/ai'
+
+export async function POST(request: Request) {
+    const body = await request.json()
+
+    const streamResponse = await getStreamingResponse({
+        messages: body.messages,
+        system: body.system,
+    })
+
+    return streamResponse.toUIMessageStreamResponse()
+}
+\`\`\`
+
+\`useChat\` still manages the message array and streaming updates, but the request payload should come from \`sendMessage\` when the values are dynamic.
 
 ---
 

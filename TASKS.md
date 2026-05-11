@@ -25,3 +25,28 @@
 - [x] extract dashboard, project, page headers as standalone components, #23
 - [x] add App Router navigation between editor and dashboard interfaces, #22
 - [x] content expansion and UI enhancements for learning modules, #24
+
+## Sprint 4: Streaming responses + editor context injection 
+
+- [x] install Vercel AI SDK, create new IAM service user, store env vars, #27
+- [x] create POST /api/chat route with streaming response, #28
+- [x] replace mock response in AssistantPanel with useChat hook, #29
+- [x] track cursor position in CodeEditor and lift to page state, #30
+- [x] track highlighted text in CodeEditor and lift to page state, #36
+- [x] inject active file content and cursor line into each chat request, #31
+- [x] track user edits in memory and synchronize AI context injection, #37
+- [x] track selection bounds and conditionally inject highlighted text, #38
+- [x] add filename and selection bounds indicator to AI panel, #32
+- [x] add persona selection and tune response, refine format guidelines, #33
+- [x] measure time to first token and reduce response latency, #35
+- [x] add persona display component rendering longer role description, #44
+- [x] add model select and redesign chat input component, #39 (refs #34)
+- [x] consolidate color palette and design system, #40 (refs #34)
+- [x] finalize v2 colors for all 3 themes and polish visual hiearchy, #41 (refs #34)
+- [x] extend modules data, restyle dashboard, and polish projects page, #45 (refs #34)
+- [x] design system, chat input, and dashboard polish for AI Eng Singapore 2026, #34
+
+<!-- Deferred -->
+## Backlog
+- [ ] standardize typography and responsive layout, #42 (refs #34, deferred)
+- [ ] add favicon, footer, and component polish, #43 (refs #34, deferred)
