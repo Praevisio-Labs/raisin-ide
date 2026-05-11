@@ -1,5 +1,7 @@
 ## Raisin.IDE's 3-Theme Palettes
 
+### Design Process
+
 Raisin's initial theme colors were inspired by the following palettes:
 
 - "Dark": VSCode Dark :)
@@ -21,3 +23,21 @@ I then used Coolors.co's Image Picker tool to tune the final v1 palette:
 *Shoutout to [Coolors.co](https://coolors.co/) for great tools that help design-challenged folks like me.*
 
 > Check out these great designs: [coolors.co/palettes/popular](https://coolors.co/palettes/popular)
+
+<br>
+
+### Version 1 Palettes
+
+**Brand Colors v1.0: [coolors.co/p/8KtxkuZx3Ijjep2dMlI6](https://coolors.co/p/8KtxkuZx3Ijjep2dMlI6)**
+
+![Raisin Brand Colors v1.0](raisin-palette-20260510.png)
+
+**Dark v1.0: [coolors.co/p/vXWTeoD8IHF2QYvG0PTB](https://coolors.co/p/vXWTeoD8IHF2QYvG0PTB)**
+
+![Dark Palette v1.0](dark-palette-20260510.png)
+
+**Light v1.0: [coolors.co/p/orJzBMcQfqbo7TAYeoUe](https://coolors.co/p/orJzBMcQfqbo7TAYeoUe)**
+
+![Light Palette v1.0](light-palette-20260510.png)
+
+<br>

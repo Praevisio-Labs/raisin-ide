@@ -2,13 +2,9 @@ import FileIcon from '@/components/FileIcon'
 import type { File } from '@/types/index'
 import { FileTreeProps } from '@/types/components'
 
-export default function FileTree({
-    files,
-    selected,
-    onSelect,
-}: FileTreeProps) {
-    const baseStyle = `border border-accent-bright bg-card-parent text-font-primary hover:opacity-60`
-    const highlightStyle = `border-y-2 border-page -my-px bg-font-primary text-card-parent`
+export default function FileTree({ files, selected, onSelect }: FileTreeProps) {
+    const baseStyle = `border border-accent-bright bg-highlight text-font-primary hover:opacity-60`
+    const highlightStyle = `border-y-2 border-page -my-px bg-font-primary text-highlight`
 
     function handleSelect(file: File) {
         onSelect(file)
