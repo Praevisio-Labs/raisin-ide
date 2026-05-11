@@ -1,4 +1,4 @@
-## Avatar Generation Prompts
+## Coding Agent Persona Avatar Generation Prompts
 
 Source Model: Nano Banana 2
 Source Files: [public/personas](public/personas)
