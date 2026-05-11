@@ -9,10 +9,7 @@ import { scrollMask } from '@/app/ui/styles'
 import LoadingIndicator from '@/components/ide/LoadingIndicator'
 import Markdown from '@/components/Markdown'
 
-export default function ChatDisplay({
-    messages,
-    status,
-}: ChatDisplayProps) {
+export default function ChatDisplay({ messages, status }: ChatDisplayProps) {
     const isStreaming = status === 'submitted' || status === 'streaming'
     const lastMessage = messages[messages.length - 1]
     const lastAssistantHasText =
@@ -22,7 +19,7 @@ export default function ChatDisplay({
         )
     const showLoadingIndicator = isStreaming && !lastAssistantHasText
 
-    const userStyle = `max-w-[85%] self-end rounded-sm bg-card-child opacity-90 mt-6`
+    const userStyle = `max-w-[85%] self-end rounded-sm bg-message opacity-90 mt-6`
     const assistantStyle = 'self-start mt-3'
 
     const scrollRef = useRef<HTMLDivElement>(null)
@@ -58,10 +55,7 @@ export default function ChatDisplay({
 
                 return (
                     <div key={msg.id} className={`px-2.5 ${assistantStyle}`}>
-                        <Markdown
-                            content={textContent}
-                            size={'xs'}
-                        />
+                        <Markdown content={textContent} size={'xs'} />
                     </div>
                 )
             })}

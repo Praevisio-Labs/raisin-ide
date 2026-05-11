@@ -2,58 +2,67 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-header:         #240046;
-  --color-page:           #7B2CBF;
+  --color-header:         #100422;
+  --color-page:           #240046;
   --color-panel:          #3C096C;
-  --color-editor:         #5A189A;
-  --color-input:          #560D9B;
-  --color-card-parent:    #5A189A;
-  --color-card-child:     #7011CA;
-  --color-font-apex:      #FF9E00;
-  --color-font-primary:   #FF9E00;
-  --color-font-secondary: #FF8300;
-  --color-font-tertiary:  #FF6200;
+  --color-editor:         #3C096C;
+  --color-input:          #570D9B;
+  --color-message:     #7111CA;
+  --color-button:    #FF6D00;
+  --color-ring:    #FF9F00;
+  --color-highlight:    #E38349;
+  --color-font-apex:      #B67211;
+  --color-font-primary:   #FF9F00;
+  --color-font-secondary: #BE5857;
+  --color-font-tertiary:  #9C446E;
+  --color-font-paragraph:  #F5ECFD;
   --color-accent-apex:    #FF6D00;
-  --color-accent-bright:  #FF6D00;
-  --color-accent-neutral: #CC5700;
-  --color-accent-dark:    #FF9A4E;
+  --color-accent-bright:  #CA11C7;
+  --color-accent-muted: #9B0D98;
+  --color-accent-dark:    #460045;
 }
 
 @layer base {
   [data-theme="dark"] {
     --color-header:         #030712;
     --color-page:           #161B22;
-    --color-panel:          #020408;
-    --color-editor:         #0D1116;
+    --color-panel:          #0B1831;
+    --color-editor:         #0B1831;
     --color-input:          #112345;
-    --color-card-parent:    #0D1116;
-    --color-card-child:     #0C1831;
-    --color-font-apex:      #EDEDED;
-    --color-font-primary:   #EDEDED;
-    --color-font-secondary: #A1A1A1;
-    --color-font-tertiary:  #A684FF;
-    --color-accent-apex:    #0065D7;
+    --color-message:     #534484;
+    --color-button:    #0065D7;
+    --color-ring:    #0B7FFF;
+    --color-highlight:    #0D1116;
+    --color-font-apex:      #A9A9A9;
+    --color-font-primary:   #A684FF;
+    --color-font-secondary: #0066D7;
+    --color-font-tertiary:  #666869;
+    --color-font-paragraph:  #EDEDED;
+    --color-accent-apex:    #0B7FFF;
     --color-accent-bright:  #0065D7;
-    --color-accent-neutral: #0059BE;
-    --color-accent-dark:    #7D8597;
+    --color-accent-muted: #004EA4;
+    --color-accent-dark:    #C1C3C7;
   }
 
   [data-theme="light"] {
-    --color-header:         #252422;
-    --color-page:           #F5F5F5;
+    --color-header:         #B5B3AC;
+    --color-page:           #252422;
     --color-panel:          #FFFCF2;
-    --color-editor:         #CCC5B9;
-    --color-input:          #FFFFFE;
-    --color-card-parent:    #F4F1DE;
-    --color-card-child:     #FFF0C0;
-    --color-font-apex:      #EB5E28;
+    --color-editor:         #FFFCF2;
+    --color-input:          #FFF0C0;
+    --color-message:     #FFFFFE;
+    --color-button:    #CD4713;
+    --color-ring:    #F4F1DE;
+    --color-highlight:    #F4F1DE;
+    --color-font-apex:      #1D1C1B;
     --color-font-primary:   #EB5E28;
-    --color-font-secondary: #403D39;
-    --color-font-tertiary:  #252422;
+    --color-font-secondary: #78746C;
+    --color-font-tertiary:  #948F86;
+    --color-font-paragraph:  #1A1400;
     --color-accent-apex:    #EB5E28;
-    --color-accent-bright:  #EB5E28;
-    --color-accent-neutral: #252422;
-    --color-accent-dark:    #CD4713;
+    --color-accent-bright:  #F07D4B;
+    --color-accent-muted: #CD4713;
+    --color-accent-dark:    #FFF0C0;
   }
 }
 

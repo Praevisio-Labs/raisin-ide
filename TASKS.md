@@ -42,7 +42,7 @@
 - [x] add persona display component rendering longer role description, #44
 - [x] add model select and redesign chat input component, #39 (refs #34)
 - [x] consolidate color palette and design system, #40 (refs #34)
-- [ ] polish learn dashboard styling and theme colors, #41 (refs #34)
+- [ ] adjust colors for 3 themes, polish learn dashboard styling, #41 (refs #34)
 - [ ] standardize typography and responsive layout, #42 (refs #34)
 - [ ] add favicon, footer, and component polish, #43 (refs #34)
 - [ ] design system, chat input, and dashboard polish for AI Eng Singapore 2026, #34

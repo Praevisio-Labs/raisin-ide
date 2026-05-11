@@ -14,7 +14,7 @@ export default function ModuleCard({
                     w-50 h-50 
                     text-font-primary
                     rounded-lg border-2 border-accent-bright
-                    bg-card-parent hover:opacity-60
+                    bg-highlight hover:opacity-60
                     cursor-pointer
                     `}>
             <span className="text-2xl font-medium">{name}</span>
