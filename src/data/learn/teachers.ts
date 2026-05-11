@@ -4,7 +4,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'lao-tzu',
         name: 'Lao Tzu',
-        avatar: '/teachers/lao-tzu.jpg',
+        // avatar: '/teachers/lao-tzu.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Simplicity and flow',
             long: 'Teaches by reducing problems to their simplest moving parts and helping learners find a natural path through complexity.',
@@ -13,7 +14,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'nietzsche',
         name: 'F. Nietzsche',
-        avatar: '/teachers/nietzsche.jpg',
+        // avatar: '/teachers/nietzsche.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Creative challenge',
             long: 'Pushes learners to question defaults, build conviction, and turn discomfort into sharper independent thinking.',
@@ -22,7 +24,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'kant',
         name: 'Immanuel Kant',
-        avatar: '/teachers/kant.jpg',
+        // avatar: '/teachers/kant.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Structured reasoning',
             long: 'Emphasizes clear mental models, explicit rules, and careful separation between assumptions and conclusions.',
@@ -31,7 +34,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'cs-lewis',
         name: 'C.S. Lewis',
-        avatar: '/teachers/cs-lewis.jpg',
+        // avatar: '/teachers/cs-lewis.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Plainspoken clarity',
             long: 'Explains abstract ideas through familiar language, concrete examples, and memorable comparisons.',
@@ -40,7 +44,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'confucius',
         name: 'Confucius',
-        avatar: '/teachers/confucius.jpg',
+        // avatar: '/teachers/confucius.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Deliberate practice',
             long: 'Turns learning into steady refinement through repetition, reflection, and attention to small improvements over time.',
@@ -49,7 +54,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'montessori',
         name: 'Maria Montessori',
-        avatar: '/teachers/montessori.jpg',
+        // avatar: '/teachers/montessori.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Hands-on discovery',
             long: 'Creates room for learners to explore, manipulate examples, and form understanding through direct experience.',
@@ -58,7 +64,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'feynman',
         name: 'Richard Feynman',
-        avatar: '/teachers/feynman.jpg',
+        // avatar: '/teachers/feynman.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Intuitive explanation',
             long: 'Breaks hard ideas into vivid mental pictures, simple language, and testable explanations that reveal whether you really understand.',
@@ -67,7 +74,8 @@ export const teachersData: Teacher[] = [
     {
         id: 'bell-hooks',
         name: 'bell hooks',
-        avatar: '/teachers/bell-hooks.jpg',
+        // avatar: '/teachers/bell-hooks.jpg',
+        avatar: '/logo.svg',
         description: {
             short: 'Engaged reflection',
             long: 'Connects technical learning to lived experience, inviting learners to notice assumptions, context, and purpose as they build.',
