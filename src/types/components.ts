@@ -101,11 +101,7 @@ export interface LoadingIndicatorProps {
 }
 
 export interface ModuleProps {
-    id?: string
-    name?: string
-    description?: string
-    skills?: string[]
-    files?: File[]
+    project: Project
     onClick: () => void
 }
 

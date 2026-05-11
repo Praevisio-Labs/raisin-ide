@@ -25,11 +25,10 @@ export default function Dashboard({
                 </h2>
             </div>
             <div className="flex-1 flex justify-center items-center gap-5">
-                {projectData.map((project, index) => (
+                {projectData.map((project) => (
                     <ModuleCard
-                        key={index}
-                        name={project.name}
-                        description={project.description}
+                        key={project.id}
+                        project={project}
                         onClick={() => onClick(project.id)}
                     />
                 ))}
