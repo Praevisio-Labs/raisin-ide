@@ -27,13 +27,13 @@ export default function Dashboard({
                 </h2>
             </div>
             <div className="flex-1 flex justify-center items-center gap-5">
-                {/* {projectData.map((project) => ( */}
-                <ModuleCard
-                    key={project.id}
-                    project={project}
-                    onClick={() => onClick(project.id)}
-                />
-                {/* ))} */}
+                {projectData.map((project) => (
+                    <ModuleCard
+                        key={project.id}
+                        project={project}
+                        onClick={() => onClick(project.id)}
+                    />
+                ))}
             </div>
         </main>
     )
