@@ -4,15 +4,18 @@ import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 import { DEMO_FILES } from '@/data/ide/demo-files'
-import { projectData } from '@/data/learn/project-modules'
+import { projectData } from '@/data/learn/projects'
 import Header from '@/components/Header'
 import FileTree from '@/components/ide/FileTree'
 import CodeEditor from '@/components/ide/CodeEditor'
 import AssistantPanel from '@/components/ide/AssistantPanel'
+import CollapsiblePanel from '@/components/ide/CollapsiblePanel'
 
 function Page() {
     const [theme, setTheme] = useState('raisin')
     const [isContextHidden, setIsContextHidden] = useState(false)
+    const [isFileTreeOpen, setIsFileTreeOpen] = useState(false)
+    const [isAssistantPanelOpen, setIsAssistantPanelOpen] = useState(false)
 
     useEffect(() => {
         document.documentElement.dataset.theme = theme
@@ -49,24 +52,53 @@ function Page() {
 
     return (
         <main
-            className={`flex flex-col w-full h-screen bg-page overflow-hidden`}>
+            className={`
+                w-full h-dvh 
+                overflow-hidden bg-page 
+                flex flex-col 
+            `}>
+            {/* Page Header */}
             <Header
                 theme={theme}
                 setTheme={setTheme}
                 path="/learn"
                 linkText="Learn"
             />
-            <div className="flex-1 flex gap-1 p-1 overflow-hidden">
-                <div
-                    className={`flex-1 h-full rounded-sm rounded-bl-xl overflow-hidden bg-panel`}>
+            {/* Wrapper */}
+            <div
+                className={`
+                    flex-1 
+                    min-h-0 gap-1 p-1 
+                    overflow-hidden
+                    flex flex-col md:flex-row 
+                `}>
+                {/* File Tree */}
+                <CollapsiblePanel
+                    title="Explorer"
+                    isOpen={isFileTreeOpen}
+                    onToggle={() => setIsFileTreeOpen(!isFileTreeOpen)}
+                    className={`
+                        order-1 
+                        rounded-sm md:rounded-bl-lg
+                        overflow-hidden bg-panel
+                        flex-none md:h-full md:flex-1
+                        ${isFileTreeOpen ? 'max-md:h-1/8' : ''}
+                    `}>
                     <FileTree
                         files={workspaceFiles}
                         selected={selectedFile}
                         onSelect={setSelectedFile}
                     />
-                </div>
+                </CollapsiblePanel>
+                {/* Monaco Editor */}
                 <div
-                    className={`flex-4 h-full flex flex-col rounded-sm overflow-hidden bg-editor`}>
+                    className={`
+                        order-2 
+                        flex-1 md:flex-[4_4_0%]
+                        max-md:min-h-3/8 md:h-full md:min-h-0
+                        overflow-hidden rounded-sm bg-editor
+                        flex flex-col
+                    `}>
                     <CodeEditor
                         file={selectedFile}
                         theme={theme}
@@ -75,8 +107,21 @@ function Page() {
                         onContentChange={handleContentChange}
                     />
                 </div>
-                <div
-                    className={`flex-3 h-full flex flex-col gap-2 rounded-sm rounded-br-xl overflow-hidden bg-panel`}>
+                {/* Assistant Panel */}
+                <CollapsiblePanel
+                    title="Assistant"
+                    isOpen={isAssistantPanelOpen}
+                    onToggle={() =>
+                        setIsAssistantPanelOpen(!isAssistantPanelOpen)
+                    }
+                    className={`
+                        order-3
+                        rounded-sm md:rounded-br-lg
+                        overflow-hidden bg-panel
+                        flex-none md:h-full md:flex-[3_3_0%]
+                        ${isAssistantPanelOpen ? 'max-md:h-4/8' : ''}
+                        
+                    `}>
                     <AssistantPanel
                         file={selectedFile}
                         cursorLine={cursorLine}
@@ -85,7 +130,7 @@ function Page() {
                         isContextHidden={isContextHidden}
                         setIsContextHidden={setIsContextHidden}
                     />
-                </div>
+                </CollapsiblePanel>
             </div>
         </main>
     )

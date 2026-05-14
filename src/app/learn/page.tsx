@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Dashboard from '@/components/learn/Dashboard'
 import Project from '@/components/learn/Project'
-import { projectData } from '@/data/learn/project-modules'
+import { projectData } from '@/data/learn/projects'
 
 function Page() {
     const [theme, setTheme] = useState('raisin')

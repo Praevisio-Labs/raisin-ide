@@ -46,7 +46,13 @@
 - [x] extend modules data, restyle dashboard, and polish projects page, #45 (refs #34)
 - [x] design system, chat input, and dashboard polish for AI Eng Singapore 2026, #34
 
+## Ad Hoc Enhancements
+
+- [x] reorg learning content file structure and import/export logic, #48
+- [x] refactor three-panel IDE for responsiveness at mobile sizes, #42 
+- [ ] generate v1 content for all skills and projects, #47
+- [ ] wire up model select component to backend API routes, 49
+
 <!-- Deferred -->
 ## Backlog
-- [ ] standardize typography and responsive layout, #42 (refs #34, deferred)
 - [ ] add favicon, footer, and component polish, #43 (refs #34, deferred)

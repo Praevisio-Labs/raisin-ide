@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { inter } from '@/app/ui/fonts'
 import './globals.css'
@@ -12,6 +12,11 @@ export const metadata: Metadata = {
             { url: '/favicon-64x64.png', sizes: '64x64', type: 'image/png' },
         ],
     },
+}
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
 }
 
 export default function RootLayout({

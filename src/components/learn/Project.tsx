@@ -1,6 +1,6 @@
 import { sora, outfit } from '@/app/ui/fonts'
 import { ProjectProps } from '@/types/components'
-import { skillsData } from '@/data/learn/skill-modules'
+import { skillsData } from '@/data/learn/skills'
 import { scrollMask } from '@/app/ui/styles'
 
 import Header from '@/components/Header'
