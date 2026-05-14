@@ -8,6 +8,7 @@ export type Language =
     | 'markdown'
     | 'json'
     | 'sql'
+    | 'text'
 
 export type Link = {
     href: string

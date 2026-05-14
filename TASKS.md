@@ -49,8 +49,8 @@
 ## Ad Hoc Enhancements
 
 - [x] reorg learning content file structure and import/export logic, #48
+- [x] refactor three-panel IDE for responsiveness at mobile sizes, #42 
 - [ ] generate v1 content for all skills and projects, #47
-- [ ] standardize typography and responsive layout, #42 
 - [ ] wire up model select component to backend API routes, 49
 
 <!-- Deferred -->

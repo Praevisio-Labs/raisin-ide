@@ -1,4 +1,6 @@
 import { type UIMessage } from 'ai'
+import { type ReactNode } from 'react'
+
 import {
     Link,
     File,
@@ -144,4 +146,12 @@ export interface StreamingResponseProps {
     fileContent?: string
     cursorLine?: number
     selectedPersona: Persona
+}
+
+export interface CollapsiblePanelProps {
+    title: string
+    children: ReactNode
+    isOpen: boolean
+    onToggle: () => void
+    className?: string
 }

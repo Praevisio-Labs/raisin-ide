@@ -14,6 +14,8 @@ import CollapsiblePanel from '@/components/ide/CollapsiblePanel'
 function Page() {
     const [theme, setTheme] = useState('raisin')
     const [isContextHidden, setIsContextHidden] = useState(false)
+    const [isFileTreeOpen, setIsFileTreeOpen] = useState(false)
+    const [isAssistantPanelOpen, setIsAssistantPanelOpen] = useState(false)
 
     useEffect(() => {
         document.documentElement.dataset.theme = theme
@@ -49,26 +51,54 @@ function Page() {
     }
 
     return (
-        <main className={`flex flex-col w-full h-dvh bg-page overflow-hidden`}>
+        <main
+            className={`
+                w-full h-dvh 
+                overflow-hidden bg-page 
+                flex flex-col 
+            `}>
+            {/* Page Header */}
             <Header
                 theme={theme}
                 setTheme={setTheme}
                 path="/learn"
                 linkText="Learn"
             />
-            <div className="flex-1 min-h-0 flex flex-col gap-1 p-1 overflow-y-auto md:flex-row md:overflow-hidden">
+            {/* Wrapper */}
+            <div
+                className={`
+                    flex-1 
+                    min-h-0 gap-1 p-1 
+                    overflow-hidden
+                    flex flex-col md:flex-row 
+                `}>
+                {/* File Tree */}
                 <CollapsiblePanel
                     title="Explorer"
-                    className="order-1 rounded-sm overflow-hidden bg-panel md:order-1 md:h-full md:flex-1 md:rounded-bl-lg"
-                    contentClassName="max-md:max-h-56 max-md:overflow-y-auto">
+                    isOpen={isFileTreeOpen}
+                    onToggle={() => setIsFileTreeOpen(!isFileTreeOpen)}
+                    className={`
+                        order-1 
+                        rounded-sm md:rounded-bl-lg
+                        overflow-hidden bg-panel
+                        flex-none md:h-full md:flex-1
+                        ${isFileTreeOpen ? 'max-md:h-1/8' : ''}
+                    `}>
                     <FileTree
                         files={workspaceFiles}
                         selected={selectedFile}
                         onSelect={setSelectedFile}
                     />
                 </CollapsiblePanel>
+                {/* Monaco Editor */}
                 <div
-                    className={`order-2 h-[62dvh] min-h-[360px] flex flex-col rounded-sm overflow-hidden bg-editor md:order-2 md:h-full md:min-h-0 md:flex-[4_4_0%]`}>
+                    className={`
+                        order-2 
+                        flex-1 md:flex-[4_4_0%]
+                        max-md:min-h-3/8 md:h-full md:min-h-0
+                        overflow-hidden rounded-sm bg-editor
+                        flex flex-col
+                    `}>
                     <CodeEditor
                         file={selectedFile}
                         theme={theme}
@@ -77,10 +107,21 @@ function Page() {
                         onContentChange={handleContentChange}
                     />
                 </div>
+                {/* Assistant Panel */}
                 <CollapsiblePanel
                     title="Assistant"
-                    className="order-3 rounded-sm overflow-hidden bg-panel md:h-full md:flex-[3_3_0%] md:rounded-br-lg"
-                    contentClassName="max-md:h-[56dvh] max-md:overflow-hidden">
+                    isOpen={isAssistantPanelOpen}
+                    onToggle={() =>
+                        setIsAssistantPanelOpen(!isAssistantPanelOpen)
+                    }
+                    className={`
+                        order-3
+                        rounded-sm md:rounded-br-lg
+                        overflow-hidden bg-panel
+                        flex-none md:h-full md:flex-[3_3_0%]
+                        ${isAssistantPanelOpen ? 'max-md:h-4/8' : ''}
+                        
+                    `}>
                     <AssistantPanel
                         file={selectedFile}
                         cursorLine={cursorLine}
