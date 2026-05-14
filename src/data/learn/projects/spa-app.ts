@@ -34,6 +34,7 @@ By the time you finish, you should be able to:
     level: 'Beginner',
     duration: '2.5 hrs',
     teachers: ['lao-tzu', 'cs-lewis'],
+    isReleased: true,
     files: [
         {
             name: 'index.html',
