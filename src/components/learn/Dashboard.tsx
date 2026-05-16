@@ -25,7 +25,7 @@ export default function Dashboard({
                 </h2>
             </div>
             <div className="flex-1 overflow-y-auto px-6 pb-6">
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-3">
                     {projectData.map((project) => (
                         <ModuleCard
                             key={project.id}

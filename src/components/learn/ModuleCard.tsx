@@ -15,19 +15,41 @@ export default function ModuleCard({ project, onClick }: ModuleProps) {
             className={`
                     flex flex-col gap-4 p-6
                     w-full min-w-0
-                    rounded-lg border-2 border-accent-muted
-                    bg-input
+                    rounded-lg border-1 border-accent-muted
+                    bg-panel
                     text-font-paragraph
                     ${cardStateClasses}
                     `}>
             <div className="flex items-start md:gap-8">
-                <div className="hidden md:flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-accent-bright bg-accent-contra">
-                    <ProjectIcon className="size-4 md:size-6 text-font-primary" />
+                <div className="hidden md:flex size-14 shrink-0 items-center justify-center rounded-xl border-1 border-accent-bright bg-accent-contra">
+                    <ProjectIcon className="size-6 text-font-primary" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                        <strong className="rounded-sm border border-accent-muted px-3 py-1.5 text-[10px] md:text-xs font-medium text-font-secondary">
+                    {/* Mobile: icon + level/duration cluster, justify-between */}
+                    <div className="flex md:hidden items-center justify-between">
+                        <div className="size-10 shrink-0 flex items-center justify-center rounded-xl border-1 border-accent-bright bg-accent-contra">
+                            <ProjectIcon className="size-4 text-font-primary" />
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <strong className="rounded-sm border border-accent-muted px-3 py-1.5 text-[10px] font-medium text-font-secondary">
+                                {project.level}
+                            </strong>
+                            <div className="flex items-center gap-1 text-font-secondary">
+                                <ClockIcon
+                                    className="size-4"
+                                    aria-hidden="true"
+                                />
+                                <span className="text-xs font-medium">
+                                    {project.duration}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Desktop: level + duration spread across full width */}
+                    <div className="hidden md:flex items-center justify-between">
+                        <strong className="rounded-sm border border-accent-muted px-3 py-1.5 text-xs font-medium text-font-secondary">
                             {project.level}
                         </strong>
                         <div className="flex items-center gap-1 text-font-secondary">

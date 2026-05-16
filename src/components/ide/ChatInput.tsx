@@ -19,7 +19,8 @@ export default function ChatInput({
     selectedModel,
     setSelectedModel,
 }: ChatInputProps) {
-    function handleSubmit() {
+    function handleSubmit(e?: React.SubmitEvent) {
+        e?.preventDefault()
         if (input.trim()) {
             const body = isContextHidden
                 ? { selectedPersona }
@@ -63,7 +64,7 @@ export default function ChatInput({
                     max-h-20
                     resize-none outline-none
                     bg-transparent
-                    text-xs text-font-paragraph
+                    text-base sm:text-xs text-font-paragraph
                     placeholder:text-[10px] placeholder:text-font-paragraph
                     px-2 pt-2 pb-1
                 `}
