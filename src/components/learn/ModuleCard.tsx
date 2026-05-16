@@ -22,14 +22,13 @@ export default function ModuleCard({ project, onClick }: ModuleProps) {
                     `}>
             <div className="flex items-start md:gap-8">
                 <div className="hidden md:flex size-14 shrink-0 items-center justify-center rounded-xl border-1 border-accent-bright bg-accent-contra">
-                    <ProjectIcon className="size-6 text-font-primary" />
+                    <ProjectIcon className="size-7 text-font-primary" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                    {/* Mobile: icon + level/duration cluster, justify-between */}
                     <div className="flex md:hidden items-center justify-between">
                         <div className="size-10 shrink-0 flex items-center justify-center rounded-xl border-1 border-accent-bright bg-accent-contra">
-                            <ProjectIcon className="size-4 text-font-primary" />
+                            <ProjectIcon className="size-5 text-font-primary" />
                         </div>
                         <div className="flex items-center gap-3">
                             <strong className="rounded-sm border border-accent-muted px-3 py-1.5 text-[10px] font-medium text-font-secondary">
@@ -47,7 +46,6 @@ export default function ModuleCard({ project, onClick }: ModuleProps) {
                         </div>
                     </div>
 
-                    {/* Desktop: level + duration spread across full width */}
                     <div className="hidden md:flex items-center justify-between">
                         <strong className="rounded-sm border border-accent-muted px-3 py-1.5 text-xs font-medium text-font-secondary">
                             {project.level}

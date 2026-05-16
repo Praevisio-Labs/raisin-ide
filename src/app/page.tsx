@@ -82,7 +82,7 @@ function Page() {
                         rounded-sm md:rounded-bl-lg
                         overflow-hidden bg-panel
                         flex-none md:h-full md:flex-1
-                        ${isFileTreeOpen ? 'max-md:h-1/8' : ''}
+                        ${isFileTreeOpen ? 'max-md:h-2/10' : ''}
                     `}>
                     <FileTree
                         files={workspaceFiles}
@@ -95,7 +95,7 @@ function Page() {
                     className={`
                         order-2 
                         flex-1 md:flex-[4_4_0%]
-                        max-md:min-h-3/8 md:h-full md:min-h-0
+                        max-md:min-h-3/10 md:h-full md:min-h-0
                         overflow-hidden rounded-sm bg-editor
                         flex flex-col
                     `}>
@@ -119,7 +119,7 @@ function Page() {
                         rounded-sm md:rounded-br-lg
                         overflow-hidden bg-panel
                         flex-none md:h-full md:flex-[3_3_0%]
-                        ${isAssistantPanelOpen ? 'max-md:h-4/8' : ''}
+                        ${isAssistantPanelOpen ? 'max-md:h-4/10' : ''}
                         
                     `}>
                     <AssistantPanel

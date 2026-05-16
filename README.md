@@ -2,7 +2,7 @@
 
 <div id="raisin-logo" align="center">
 
-<img src="./assets/branding/raisin/logo-color.svg" alt="Raisin.IDE Logo" width="50"/>  
+<img src="./public/logo/logo-color.svg" alt="Raisin.IDE Logo" width="50"/>  
 
 <h3>Raisin.IDE</h3>
 </div>
@@ -51,6 +51,6 @@ Read our full thesis here: [blog.stackademic.com](https://blog.stackademic.com/r
 
 <div id="praevisio-logo" align="left">
 
-<img src="./assets/branding/praevisio/brand-slogan.png" alt="Praevisio.Labs Logo" width="250"/>  
+<img src="./public/brand/brand-slogan.png" alt="Praevisio.Labs Logo" width="250"/>  
 
 </div>

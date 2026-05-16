@@ -30,7 +30,7 @@ export default function Project({
             />
             <div className="flex-none text-center pt-4">
                 <h2
-                    className={`${sora.className} text-xl md:text-2xl text-font-apex font-bold mb-4`}>
+                    className={`${sora.className} text-xl md:text-2xl text-font-apex font-bold mb-2 md:mb-4`}>
                     {project.name}
                 </h2>
             </div>
@@ -60,7 +60,7 @@ export default function Project({
                 <div id="exercise-instructions">
                     <Markdown content={project.instructions} />
                 </div>
-                <div className="relative flex justify-center mb-6">
+                <div className="relative flex justify-center mb-4 md:mb-6">
                     <div
                         className={`bg-panel rounded-xl py-[3px] px-[4px] border border-page`}>
                         <button
